@@ -12,10 +12,8 @@
 # misc
 .DS_Store
 .idea
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+process.env.development.local
+
 
 npm-debug.log*
 yarn-debug.log*
