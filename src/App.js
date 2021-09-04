@@ -3,9 +3,6 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import './App.scss';
 import Amplify, { Auth } from 'aws-amplify';
 
-// Parse the html provided by lambda for GenericWebEnvInfo server side info.
-const ServerSideDetails = JSON.parse(document.getElementById('GenericWebEnvInfo').dataset.envinfo);
-
 const loading = () => {
   return (
     <div className="sk-circle">
@@ -29,14 +26,27 @@ const loading = () => {
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 
 // Setup auth
-Amplify.configure({
-  Auth: {
-    identityPoolId: ServerSideDetails.cognitoIdentityPoolId,
-    region: ServerSideDetails.awsRegion,
-    userPoolId: ServerSideDetails.cognitoUserPoolId,
-    userPoolWebClientId: ServerSideDetails.cognitoUserPoolWebClientId
-  }
-});
+// Parse the html provided by lambda for GenericWebEnvInfo server side info.
+if (process.env.NODE_ENV !== 'production') {
+  Amplify.configure({
+    Auth: {
+      identityPoolId: process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID,
+      region: process.env.REACT_APP_AWS_REGION,
+      userPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+      userPoolWebClientId: process.env.REACT_APP_COGNITO_USER_POOL_WEB_CLIENT_ID
+    }
+  });
+} else {
+  const ServerSideDetails = JSON.parse(document.getElementById('GenericWebEnvInfo').dataset.envinfo);
+  Amplify.configure({
+    Auth: {
+      identityPoolId: ServerSideDetails.cognitoIdentityPoolId,
+      region: ServerSideDetails.awsRegion,
+      userPoolId: ServerSideDetails.cognitoUserPoolId,
+      userPoolWebClientId: ServerSideDetails.cognitoUserPoolWebClientId
+    }
+  });
+}
 
 // Routes that require a JWT to work. Server side there is no auth, so client side will redirect.
 // Cognito populates LastAuthUser, and clears this out if the session is expired.
