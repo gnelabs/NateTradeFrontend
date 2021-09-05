@@ -5,8 +5,8 @@ import { Badge } from 'reactstrap';
 import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import { Auth } from 'aws-amplify';
 
-import logo_main from '../../assets/img/brand/g_small.png'
-import logo_small_tr from '../../assets/img/brand/g_small.png'
+import logo_main from '../../assets/img/brand/nt_top_small1.png'
+import logo_small_tr from '../../assets/img/brand/nt_top_small1.png'
 
 const propTypes = {
   children: PropTypes.node,
@@ -35,8 +35,8 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo_main, width: 80, height: 52, alt: 'Logo' }}
-          minimized={{ src: logo_small_tr, width: 80, height: 52, alt: 'Logo' }}
+          full={{ src: logo_main, width: 250, height: 50, alt: 'Logo' }}
+          minimized={{ src: logo_small_tr, width: 250, height: 50, alt: 'Logo' }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg">
             &nbsp; <span className="navbar-toggler-icon" /> Menu

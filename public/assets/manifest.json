@@ -1,11 +1,16 @@
 {
-  "short_name": "GenericFrontend",
-  "name": "Generic Frontend Website",
+  "short_name": "NateTrade",
+  "name": "NateTrade",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
-      "sizes": "100x100",
+      "src": "./assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "./assets/img/favicon.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
     }
   ],
   "start_url": ".",
