@@ -26,7 +26,7 @@ const loading = () => {
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 
 // Setup auth
-// Parse the html provided by lambda for GenericWebEnvInfo server side info.
+// Parse the html provided by lambda for NateTradeEnvInfo server side info.
 if (process.env.NODE_ENV !== 'production') {
   Amplify.configure({
     Auth: {
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== 'production') {
     }
   });
 } else {
-  const ServerSideDetails = JSON.parse(document.getElementById('GenericWebEnvInfo').dataset.envinfo);
+  const ServerSideDetails = JSON.parse(document.getElementById('NateTradeEnvInfo').dataset.envinfo);
   Amplify.configure({
     Auth: {
       identityPoolId: ServerSideDetails.cognitoIdentityPoolId,

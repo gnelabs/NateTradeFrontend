@@ -2,7 +2,13 @@
 
 // Replacement color scheme.
 // To-Do: Do this properly?
-$genericblue: #05A;
-$generictan: #FDA;
-$primary: $generictan;
-$info: $genericblue;
+$lightergrey: #525252;
+$darkgrey: #222222;
+$primary: $darkgrey;
+$info: $lightergrey;
+
+// Brand custom width. Two pixels extra for one pixel padding on either side to match the minimized logo.
+$navbar-brand-width: 252px !default;
+
+// Sidebar width to account for logo size and move space for menus.
+$sidebar-width: 250px !default;
