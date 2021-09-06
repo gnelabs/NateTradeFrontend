@@ -3,7 +3,7 @@
   "name": "NateTrade",
   "icons": [
     {
-      "src": "./assets/img/apple-touch-icon.png",
+      "src": "./img/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     },
