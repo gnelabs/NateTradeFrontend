@@ -6,17 +6,6 @@ import { Auth } from 'aws-amplify';
 class Home extends Component {
   constructor(props) {
     super(props);
-    console.log('props: ', this.props);
-    this.state = {
-      jwttoken: ""
-    };
-  }
-  
-  async componentWillMount() {
-    this.setState({
-      jwttoken: (await Auth.currentSession()).getIdToken().getJwtToken()
-    });
-    console.log('state: ', this.state);
   }
   
   render() {
