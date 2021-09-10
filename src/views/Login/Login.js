@@ -7,17 +7,14 @@ import { Auth } from 'aws-amplify';
 class Login extends Component {
   constructor(props) {
     super(props);
-    console.log('props: ', this.props);
     
     if (this.props.location.state !== undefined && this.props.location.state != null) {
-      if ("prefilledUser" in this.props.location.state) {
-        var predefinedUser = this.props.location.state.prefilledUser;
-      } else {
-        var predefinedUser = ''
-      }
+      var predefinedUser = this.props.location.state;
     } else {
       var predefinedUser = ''
     }
+    
+    console.log('props: ', this.props);
     
     this.state = {
       submitDisabled: true,
@@ -102,7 +99,7 @@ class Login extends Component {
             <Row className="justify-content-center">
               <Col md="8">
                 <CardGroup>
-                  <Card className="p-4">
+                  <Card className="p-1">
                     <CardBody>
                       <h1>Login</h1>
                       <p className="text-muted">Username (email) and password.</p>
@@ -112,7 +109,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" placeholder="Username (email)" id='userName' autoFocus={true} onChange={this.handleChange} />
+                        <Input type="email" placeholder="Username (email)" id='userName' autoFocus={true} value={this.state.userName} onChange={this.handleChange} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
