@@ -6,65 +6,69 @@ async function signOut() {
   window.location.reload();
 }
 
-export default {
+// Sign out link. Revokes the session.
+const displaySignOut = {
+  name: 'Log Out',
+  url: '/login',
+  icon: 'fa fa-sign-out',
+  attributes: { onClick: signOut },
+}
+
+// Sign in link, redirects to login page.
+const displaySignIn = {
+  name: 'Log In',
+  url: '/login',
+  icon: 'fa fa-sign-in',
+  attributes: { exact: true },
+}
+
+// Register link, redirects to register page.
+const displayRegister = {
+  name: 'Register',
+  url: '/register',
+  icon: 'fa fa-share-square-o',
+  attributes: { exact: true },
+}
+
+const navMenu = {
   items: [
     {
-      title: true,
-      name: 'Tools',
-    },
-    {
-      name: 'Dashboard',
+      name: 'Home',
       url: '/',
-      icon: 'fa fa-line-chart',
-      attributes: {
-        exact: true
-      },
+      icon: 'fa fa-home',
+      attributes: { exact: true },
     },
     {
       title: true,
-      name: 'Controls',
+      name: 'Arbitrage Strategies',
     },
     {
-      name: 'Log Out',
-      url: '/login',
-      icon: 'fa fa-sign-out',
-      attributes: { onClick: signOut },
-    },
-    {
-      divider: true,
+      name: 'Divvy Arbs',
+      url: '/divvyarb',
+      icon: 'fa fa-money',
+      attributes: { exact: true },
     },
     {
       title: true,
-      name: 'Info',
-    },
-    {
-      name: 'Documentation',
-      icon: 'fa fa-file-text-o',
-      itemAttr: { id: 'drop-1' },
-      children: [
-        {
-          name: 'Frontend React Site',
-          url: 'https://github.com/gnelabs/GenericFrontend',
-          icon: 'fa fa-file-code-o',
-          attributes: {
-            target: '_blank',
-            rel: "noreferrer noopener",
-            disabled: false,
-            hidden: false,
-          },
-        },
-        {
-          name: 'Backend Python & AWS Infra',
-          url: 'https://github.com/gnelabs/GenericServerlessBackend',
-          icon: 'fa fa-file-code-o',
-          attributes: {
-            target: '_blank',
-            rel: "noreferrer noopener",
-            disabled: false,
-            hidden: false,
-          },
-        },
-      ]
+      name: 'Account',
     }
   ]
 };
+
+// Checks the cognito session to see if it's valid.
+const isSignedIn = async () => {
+  const result = await Auth.currentAuthenticatedUser().catch(reason => {});
+  return result;
+}
+
+(async () => {
+  if (await isSignedIn() !== undefined) {
+    navMenu.items.push(displaySignOut);
+  } else {
+    navMenu.items.push(displaySignIn);
+    navMenu.items.push(displayRegister);
+  }
+})();
+
+
+export default navMenu;
