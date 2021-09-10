@@ -24,6 +24,7 @@ const loading = () => {
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
+const UserLayout = React.lazy(() => import('./containers/AuthLayout'));
 
 // Setup auth
 // Parse the html provided by lambda for NateTradeEnvInfo server side info.
@@ -95,8 +96,8 @@ class App extends Component {
         <React.Suspense fallback={loading()}>
           <Switch>
             <Route exact path="/" name="Home" component={DefaultLayout} />
-            <Route path="/login" name="Login Page" render={props => <Login {...props} />} />
-            <Route path="/register" name="Register" render={props => <Register {...props} />} />
+            <Route path="/login" name="Login Page" component={UserLayout} />} />
+            <Route path="/register" name="Register" component={UserLayout} />} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>
