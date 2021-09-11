@@ -47,7 +47,7 @@
     "simple-line-icons": "^2.4.1",
     "spinkit": "1.2.5",
     "yup": "^0.32.9",
-    "aws-amplify": "3.0.10"
+    "aws-amplify": "4.2.9"
   },
   "devDependencies": {
     "mutationobserver-shim": "^0.3.3",
