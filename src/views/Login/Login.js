@@ -45,7 +45,6 @@ class Login extends Component {
     
     await Auth.signIn(this.state.userName, this.state.passWord)
       .then(user => {
-        localStorage.setItem("authkeyprefix", user.keyPrefix);
         this.setState({
           jwttoken: user.signInUserSession.accessToken.jwtToken
         });

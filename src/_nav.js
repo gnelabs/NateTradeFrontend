@@ -1,9 +1,8 @@
 import { Auth } from 'aws-amplify';
 
-// Logs out and reloads, which will make the user redirected to /login.
+// Logs out and sends the user to /login.
 async function signOut() {
   await Auth.signOut();
-  window.location.reload();
 }
 
 // Sign out link. Revokes the session.
@@ -56,19 +55,14 @@ const navMenu = {
 };
 
 // Checks the cognito session to see if it's valid.
-const isSignedIn = async () => {
-  const result = await Auth.currentAuthenticatedUser().catch(reason => {});
-  return result;
-}
-
-(async () => {
-  if (await isSignedIn() !== undefined) {
+Auth.currentAuthenticatedUser()
+  .then(user => {
     navMenu.items.push(displaySignOut);
-  } else {
+  })
+  .catch(err => {
     navMenu.items.push(displaySignIn);
     navMenu.items.push(displayRegister);
-  }
-})();
+  })
 
 
 export default navMenu;
