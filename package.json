@@ -56,7 +56,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "zip": "react-scripts build && zip -3 -r build/website_$npm_package_version.zip build/",
+    "zip": "7z a website.zip build\\",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",

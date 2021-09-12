@@ -13,6 +13,7 @@
 .DS_Store
 .idea
 .env.development.local
+.env.production
 
 
 npm-debug.log*
