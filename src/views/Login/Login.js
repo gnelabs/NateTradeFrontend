@@ -14,8 +14,6 @@ class Login extends Component {
       var predefinedUser = ''
     }
     
-    console.log('props: ', this.props);
-    
     this.state = {
       submitDisabled: true,
       verifyDisabled: true,
@@ -59,7 +57,9 @@ class Login extends Component {
   }
   
   // Once the user has logged in with Cognito, send a query to the server
-  // with the JWT to verify it succeeds.
+  // with the JWT to verify it succeeds. Instead of doing a history push,
+  // instead reload the url to force React to refresh the state from scratch
+  // in order to display the correct account information in the menu.
   async handleVerify() {
     fetch('/auth/verify', {
       method: 'GET',
@@ -72,7 +72,7 @@ class Login extends Component {
         this.setState({
           loading_cognito: false,
         });
-        this.props.history.push('/');
+        window.location.replace("/");
       } else {
         alert("Login failed. Check your username or password and try again.");
       }

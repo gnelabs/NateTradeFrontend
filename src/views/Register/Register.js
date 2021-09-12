@@ -8,7 +8,7 @@ import classnames from 'classnames';
 class Register extends Component {
   constructor(props) {
     super(props);
-    console.log('props: ', this.props);
+    
     this.state = {
       submitDisabled: true,
       loading_cognito: false,
@@ -49,7 +49,6 @@ class Register extends Component {
   }
   
   handleSubmit() {
-    console.log(this.state);
     this.setState({
       submitDisabled: true,
       loading_cognito: true
