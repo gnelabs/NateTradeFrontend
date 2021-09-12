@@ -1,0 +1,6 @@
+{
+  "name": "DivvyArb",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./DivvyArb.js"
+}
