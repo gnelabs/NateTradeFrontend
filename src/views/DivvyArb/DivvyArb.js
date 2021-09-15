@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Spinner } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Spinner } from 'reactstrap';
 import DataTable from 'react-data-table-component';
 import { Auth } from 'aws-amplify';
 
@@ -12,73 +12,102 @@ const tableColumns = [
   },
   {
     id: 1,
+    name: "Valid",
+    selector: (row) => row.valid
+  },
+  {
+    id: 2,
     name: "Ticker",
     selector: (row) => row.ticker
   },
   {
-    id: 2,
+    id: 3,
     name: "Last Seen",
     selector: (row) => row.timestamp,
     grow: 3
   },
   {
-    id: 3,
+    id: 4,
     name: "BPPW",
     selector: (row) => row.bppw
   },
   {
-    id: 4,
+    id: 5,
     name: "Div Amount",
     selector: (row) => row.div_amount
   },
   {
-    id: 5,
+    id: 6,
     name: "Ex-Div Date",
     selector: (row) => row.ex_date
   },
   {
-    id: 6,
+    id: 7,
     name: "Expiration",
     selector: (row) => row.expiration,
     grow: 2
   },
   {
-    id: 7,
+    id: 8,
     name: "Underlying Quote",
     selector: (row) => row.underlying
   },
   {
-    id: 8,
+    id: 9,
     name: "Strike",
     selector: (row) => row.strike
   },
   {
-    id: 9,
+    id: 10,
     name: "Div Yield",
     selector: (row) => row.div_yield
   },
   {
-    id: 10,
+    id: 11,
     name: "Profit",
     selector: (row) => row.profit_on_longconv
   },
   {
-    id: 11,
+    id: 12,
     name: "Put Volume",
     selector: (row) => row.put_volume
   },
   {
-    id: 12,
-    name: "Previous Sightings",
-    selector: (row) => row.previous_sightings,
-    grow: 2
-  },
-  {
     id: 13,
-    name: "Notes",
-    selector: (row) => row.notes
+    name: "Details",
+    selector: (row) => row.details,
+    button: true
   }
 ];
+
+
+// In development. Right now does nothing.
+class ViewNotesButton extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      popoverOpen: false
+    };
+  }
+
+  toggle() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen,
+    });
+  }
+
+  render() {
+    return (
+      <span>
+        <Button className="mr-1" color="secondary" id="sadf" onClick={this.toggle}>
+          View
+        </Button>
+      </span>
+    );
+  }
+}
 
 
 class DivvyArb extends Component {
@@ -95,6 +124,7 @@ class DivvyArb extends Component {
   }
   
   async componentWillMount() {
+    // Get jwt or redirect to login if missing.
     await Auth.currentAuthenticatedUser()
       .then(result => {
         this.setState({
@@ -108,7 +138,7 @@ class DivvyArb extends Component {
     
       });
     
-    fetch('/fetch/divvyarbtickers', {
+    fetch('https://www.natetrade.com/fetch/divvyarbtickers', {
       method: 'GET',
       ContentType: 'application/json',
       headers: {
@@ -119,26 +149,49 @@ class DivvyArb extends Component {
       let prevsight = {}
       let notes = {}
       
+      // Zero length list means no arbs.
       if (responseJSON.length > 0) {
         responseJSON.forEach(function (arrayItem, index) {
           const tickerSymbol = arrayItem["ticker"]
+          let isValidTracking = []
           
+          // ID needed to be included to make data table work.
           arrayItem["id"] = index
+          // Details button renders information about ticker in card.
+          arrayItem["details"] = <ViewNotesButton />
           
+          // Data tables can't handle this data by itself. Move to its own object.
           if (arrayItem["previous_sightings"].length > 0) {
             prevsight[tickerSymbol] = arrayItem["previous_sightings"]
-            arrayItem["previous_sightings"] = "true"
-          } else {
-            arrayItem["previous_sightings"] = ""
           }
           
+          // Move notes to its own object.
           if (arrayItem["notes"].length > 0) {
             notes[tickerSymbol] = arrayItem["notes"]
-            arrayItem["notes"] = "true"
+            
+            for (const noteitem of arrayItem["notes"]) {
+              if ("isvalid" in noteitem) {
+                isValidTracking.push(noteitem.isvalid);
+              }
+            }
           } else {
-            arrayItem["notes"] = ""
+            arrayItem["valid"] = ""
           }
           
+          // Two people can disagree if an arb is valid. Determine if it is valid,
+          // invalid, or unknown and display correct icon.
+          let uniqueValid = [...new Set(isValidTracking)]
+          if (uniqueValid.length > 1) {
+            arrayItem["valid"] = <i className="fa fa-question"></i>
+          } else if (uniqueValid.length === 1) {
+            if (uniqueValid[0] === true) {
+              arrayItem["valid"] = <i className="fa fa-thumbs-o-up"></i>
+            } else if (uniqueValid[0] === false) {
+              arrayItem["valid"] = <i className="fa fa-thumbs-o-down"></i>
+            }
+          }
+          
+          // Display a fresh badge if the arb is from today.
           if (arrayItem["fresh"] === true) {
             arrayItem["fresh"] = <Badge color="success">Fresh</Badge>
           } else if (arrayItem["fresh"] === false) {
@@ -157,6 +210,7 @@ class DivvyArb extends Component {
         notesData: notes,
         prevSightingsData: prevsight
       });
+      console.log("Notes: ", notes);
     }).catch(err => alert("Something went wrong contacting the server."));
   }
   
