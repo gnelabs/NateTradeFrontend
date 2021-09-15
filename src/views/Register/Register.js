@@ -13,6 +13,7 @@ class Register extends Component {
       submitDisabled: true,
       loading_cognito: false,
       agreement_checked: false,
+      user_confirmed: false,
       activeTab: '1'
     };
     
@@ -48,30 +49,43 @@ class Register extends Component {
     }
   }
   
-  handleSubmit() {
+  async handleSubmit() {
     this.setState({
       submitDisabled: true,
       loading_cognito: true
     });
     
-    Auth.signUp({
+    // Sign up with email as username.
+    const user = await Auth.signUp({
       username: this.state.userName,
       password: this.state.passWord,
       attributes: {
         email: this.state.userName
       }
-    }).then(resp => {
-      this.props.history.push({
-        pathname: '/login',
-        state: this.state.userName,
-      });
     }).catch(err => {
+      alert(err.message);
       this.setState({
         submitDisabled: false,
         loading_cognito: false
       });
-      alert(err.message)
     });
+    
+    // Wait until user is confirmed before redirecting to login page.
+    if (user !== undefined) {
+      const userConfirmed = !!user.userConfirmed;
+      
+      this.setState({
+        submitDisabled: !userConfirmed,
+        loading_cognito: !userConfirmed
+      });
+      
+      if (userConfirmed === true) {
+        this.props.history.push({
+          pathname: '/login',
+          state: this.state.userName,
+        });
+      }
+    }
   }
   
   handleChange(event) {

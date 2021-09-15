@@ -8,6 +8,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     
+    
+    // The state is passed from register to login if this is a new user.
     if (this.props.location.state !== undefined && this.props.location.state != null) {
       var predefinedUser = this.props.location.state;
     } else {
