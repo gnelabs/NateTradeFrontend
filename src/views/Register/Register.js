@@ -13,7 +13,6 @@ class Register extends Component {
       submitDisabled: true,
       loading_cognito: false,
       agreement_checked: false,
-      user_confirmed: false,
       activeTab: '1'
     };
     
