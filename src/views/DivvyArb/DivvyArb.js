@@ -81,68 +81,52 @@ const tableColumns = [
 ];
 
 
-// In development. Right now does nothing.
-class ViewNotesButton extends Component {
-  constructor(props) {
-    super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      popoverOpen: false
-    };
-  }
-
-  toggle() {
-    this.setState({
-      popoverOpen: !this.state.popoverOpen,
-    });
-  }
-
-  render() {
-    return (
-      <span>
-        <Button className="mr-1" color="secondary" id="sadf" onClick={this.toggle}>
-          View
-        </Button>
-      </span>
-    );
-  }
-}
-
-
 class DivvyArb extends Component {
   constructor(props) {
     super(props);
+    
+    this.arbDetailsRef = React.createRef();
     
     this.state = {
       jwttoken: "",
       divvyArbData: [],
       loadingSpinner: true,
       notesData: {},
-      prevSightingsData: {}
+      prevSightingsData: {},
+      detailDataToDisplay: ""
     };
+    this.handleReference = this.handleReference.bind(this);
   }
   
-  async componentWillMount() {
+  getJwtOrRedirect() {
     // Get jwt or redirect to login if missing.
-    await Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser()
       .then(result => {
         this.setState({
           jwttoken: (result.signInUserSession.accessToken.jwtToken),
-        });
+        },
+        this.fetchDivvyArbTickers
+        );
       })
       .catch(err => { 
         this.props.history.push({
           pathname: '/login'
         });
-    
       });
-    
-    fetch('https://www.natetrade.com/fetch/divvyarbtickers', {
-      method: 'GET',
-      ContentType: 'application/json',
+  }
+  
+  handleReference(tickerSymbol) {
+    this.setState({
+      detailDataToDisplay: tickerSymbol,
+    }, this.arbDetailsRef.current.scrollIntoView());
+  }
+  
+  fetchDivvyArbTickers() {
+    fetch("https://www.natetrade.com/fetch/divvyarbtickers", {
+      method: "GET",
+      ContentType: "application/json",
       headers: {
-        'Authorization': this.state.jwttoken
+        "Authorization": this.state.jwttoken
       }
     }).then((response) => response.json()).then(responseJSON => {
       let data = []
@@ -158,7 +142,7 @@ class DivvyArb extends Component {
           // ID needed to be included to make data table work.
           arrayItem["id"] = index
           // Details button renders information about ticker in card.
-          arrayItem["details"] = <ViewNotesButton />
+          arrayItem["details"] = <span><Button className="mr-1" color="secondary" id={tickerSymbol} onClick={() => this.handleReference(tickerSymbol)}>View</Button></span>
           
           // Data tables can't handle this data by itself. Move to its own object.
           if (arrayItem["previous_sightings"].length > 0) {
@@ -201,31 +185,29 @@ class DivvyArb extends Component {
           arrayItem["div_yield"] = arrayItem["div_yield"].concat("%")
           
           data.push(arrayItem);
-        });
+        }, this); // Passing this as the second argument to forEach so it has access to scope.
       }
       
       this.setState({
         divvyArbData: data,
-        loadingSpinner: false,
         notesData: notes,
-        prevSightingsData: prevsight
+        prevSightingsData: prevsight,
+        loadingSpinner: false
       });
       console.log("Notes: ", notes);
-    }).catch(err => alert("Something went wrong contacting the server."));
+    }).catch(err => {
+      console.log(err);
+      alert("Something went wrong contacting the server.");
+    });
+  }
+  
+  componentDidMount() {
+    this.getJwtOrRedirect()
   }
   
   render() {
     return (
       <div className="animated fadeIn">
-        <Row>
-          <Col>
-            <Card>
-              <CardBody>
-                This page is still in development.
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
         <Row>
           <Col>
             <Card>
@@ -244,6 +226,24 @@ class DivvyArb extends Component {
                   striped={true}
                 />
               }
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <i className="fa fa-object-group"></i> Arb details
+              </CardHeader>
+              <CardBody>
+                <div ref={this.arbDetailsRef}>
+                { this.state.detailDataToDisplay ?
+                  this.state.detailDataToDisplay
+                :
+                  <small className="text-muted">Click the View button to see details about a particular arbitrage.</small>
+                }
+                </div>
               </CardBody>
             </Card>
           </Col>
