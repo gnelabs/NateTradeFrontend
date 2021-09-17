@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Spinner } from 'reactstrap';
 import DataTable from 'react-data-table-component';
 import { Auth } from 'aws-amplify';
+import Chart from './DetailsChart';
 
 const tableColumns = [
   {
@@ -93,6 +94,7 @@ class DivvyArb extends Component {
       loadingSpinner: true,
       notesData: {},
       prevSightingsData: {},
+      tickerSymbolToDisplay: "",
       detailDataToDisplay: ""
     };
     this.handleReference = this.handleReference.bind(this);
@@ -117,7 +119,8 @@ class DivvyArb extends Component {
   
   handleReference(tickerSymbol) {
     this.setState({
-      detailDataToDisplay: tickerSymbol,
+      tickerSymbolToDisplay: tickerSymbol,
+      detailDataToDisplay: this.state.prevSightingsData[tickerSymbol]
     }, this.arbDetailsRef.current.scrollIntoView());
   }
   
@@ -194,7 +197,6 @@ class DivvyArb extends Component {
         prevSightingsData: prevsight,
         loadingSpinner: false
       });
-      console.log("Notes: ", notes);
     }).catch(err => {
       console.log(err);
       alert("Something went wrong contacting the server.");
@@ -230,24 +232,57 @@ class DivvyArb extends Component {
             </Card>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-object-group"></i> Arb details
-              </CardHeader>
-              <CardBody>
-                <div ref={this.arbDetailsRef}>
-                { this.state.detailDataToDisplay ?
-                  this.state.detailDataToDisplay
-                :
-                  <small className="text-muted">Click the View button to see details about a particular arbitrage.</small>
-                }
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <div ref={this.arbDetailsRef}>
+          <Row>
+          { this.state.tickerSymbolToDisplay ?
+            <React.Fragment>
+              <Col>
+                <Card>
+                  <div>
+                    <CardHeader>
+                      <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                    </CardHeader>
+                    <CardBody>
+                      <div>
+                        testing asdf
+                      </div>
+                    </CardBody>
+                  </div>
+                </Card>
+              </Col>
+              <Col>
+                <Card>
+                  <div>
+                    <CardHeader>
+                      <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                    </CardHeader>
+                    <CardBody>
+                      <div>
+                        <Chart prevsighting={this.state.detailDataToDisplay} />
+                      </div>
+                    </CardBody>
+                  </div>
+                </Card>
+              </Col>
+            </React.Fragment>
+          :
+            <Col>
+              <Card>
+                <React.Fragment>
+                  <CardHeader>
+                    <i className="fa fa-object-group"></i> Arb details
+                  </CardHeader>
+                  <CardBody>
+                    <div>
+                      <small className="text-muted">Click the View button to see details about a particular arbitrage.</small>
+                    </div>
+                  </CardBody>
+                </React.Fragment>
+              </Card>
+            </Col>
+          }
+          </Row>
+        </div>
       </div>
     );
   }
