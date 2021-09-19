@@ -72,7 +72,7 @@ class Chart extends Component {
   
   // Fresh data from passed down into props will re-populate data.
   componentDidUpdate() {
-    this.setupChartData();
+    this.setupChartData()
   }
   
   render() {

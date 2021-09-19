@@ -4,6 +4,7 @@ import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Spinner } from 're
 import DataTable from 'react-data-table-component';
 import { Auth } from 'aws-amplify';
 import Chart from './DetailsChart';
+import Notes from './DetailsNotes';
 
 const tableColumns = [
   {
@@ -94,7 +95,7 @@ class DivvyArb extends Component {
       loadingSpinner: true,
       notesData: {},
       prevSightingsData: {},
-      tickerSymbolToDisplay: "",
+      tickerSymbolToDisplay: "Click View for details.",
       detailDataToDisplay: ""
     };
     this.handleReference = this.handleReference.bind(this);
@@ -234,7 +235,7 @@ class DivvyArb extends Component {
         </Row>
         <div ref={this.arbDetailsRef}>
           <Row>
-          { this.state.tickerSymbolToDisplay ?
+          { this.state.detailDataToDisplay ?
             <React.Fragment>
               <Col>
                 <Card>
@@ -244,7 +245,7 @@ class DivvyArb extends Component {
                     </CardHeader>
                     <CardBody>
                       <div>
-                        testing asdf
+                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} />
                       </div>
                     </CardBody>
                   </div>
@@ -266,20 +267,36 @@ class DivvyArb extends Component {
               </Col>
             </React.Fragment>
           :
-            <Col>
-              <Card>
-                <React.Fragment>
-                  <CardHeader>
-                    <i className="fa fa-object-group"></i> Arb details
-                  </CardHeader>
-                  <CardBody>
-                    <div>
-                      <small className="text-muted">Click the View button to see details about a particular arbitrage.</small>
-                    </div>
-                  </CardBody>
-                </React.Fragment>
-              </Card>
-            </Col>
+            <React.Fragment>
+              <Col>
+                <Card>
+                  <div>
+                    <CardHeader>
+                      <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                    </CardHeader>
+                    <CardBody>
+                      <div>
+                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} />
+                      </div>
+                    </CardBody>
+                  </div>
+                </Card>
+              </Col>
+              <Col>
+                <Card>
+                  <div>
+                    <CardHeader>
+                      <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                    </CardHeader>
+                    <CardBody>
+                      <div>
+                        <small className="text-muted">There is no history to display for this ticker.</small>
+                      </div>
+                    </CardBody>
+                  </div>
+                </Card>
+              </Col>
+            </React.Fragment>
           }
           </Row>
         </div>
