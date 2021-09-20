@@ -245,7 +245,7 @@ class DivvyArb extends Component {
                     </CardHeader>
                     <CardBody>
                       <div>
-                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} />
+                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} ticker={this.state.tickerSymbolToDisplay} jwt={this.state.jwttoken} />
                       </div>
                     </CardBody>
                   </div>
@@ -276,7 +276,7 @@ class DivvyArb extends Component {
                     </CardHeader>
                     <CardBody>
                       <div>
-                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} />
+                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} ticker={this.state.tickerSymbolToDisplay} />
                       </div>
                     </CardBody>
                   </div>
