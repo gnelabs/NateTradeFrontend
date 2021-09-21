@@ -13,12 +13,13 @@ class Login extends Component {
     if (this.props.location.state !== undefined && this.props.location.state != null) {
       var predefinedUser = this.props.location.state;
     } else {
-      var predefinedUser = ''
+      var predefinedUser = ""
     }
     
     this.state = {
       submitDisabled: true,
       verifyDisabled: true,
+      freshlyRegistered: predefinedUser,
       userName: predefinedUser,
       loading_cognito: false,
       jwttoken: ""
@@ -74,7 +75,11 @@ class Login extends Component {
         this.setState({
           loading_cognito: false,
         });
-        window.location.replace("/");
+        if (this.state.freshlyRegistered) {
+          window.location.replace("/account");
+        } else {
+          window.location.replace("/");
+        }
       } else {
         alert("Login failed. Check your username or password and try again.");
       }
