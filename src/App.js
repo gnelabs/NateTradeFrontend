@@ -57,9 +57,10 @@ class App extends Component {
         <React.Suspense fallback={loading()}>
           <Switch>
             <Route exact path="/" name="Home" component={DefaultLayout} />
-            <Route exact path="/divvyarb" name="DivvyArb" component={DefaultLayout} />
+            <Route path="/divvyarb" name="DivvyArb" component={DefaultLayout} />
             <Route path="/login" name="Login Page" component={UserLayout} />} />
             <Route path="/register" name="Register" component={UserLayout} />} />
+            <Route path="/account" name="AccountManage" component={DefaultLayout} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>
