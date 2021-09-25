@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Badge,
   Button,
   Card,
   CardBody,
@@ -17,7 +16,8 @@ class Notes extends Component {
     super(props);
     
     this.state = {
-      showModal: false
+      showModal: false,
+      editableNote: {}
     };
     
     this.handleEdit = this.handleEdit.bind(this);
@@ -27,14 +27,33 @@ class Notes extends Component {
     this.setState({
       showModal: !this.state.showModal,
     });
-    console.log("clicked");
+  }
+  
+  // Make the user's own note editable, prepare to pass that data to the Editor component.
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.notedata !== this.props.notedata) {
+      for (let item of this.props.notedata) {
+        if (item.submitter === this.props.alias) {
+          this.setState({
+            editableNote: item
+          });
+        }
+      }
+    }
   }
   
   render() {
     return (
       <div className="animated fadeIn">
       { this.state.showModal ?
-        <Editor ticker={this.props.ticker} showmodal={this.state.showModal} toggle={this.handleEdit} jwt={this.props.jwt} />
+        <Editor
+          ticker={this.props.ticker}
+          showmodal={this.state.showModal}
+          toggle={this.handleEdit}
+          jwt={this.props.jwt}
+          alias={this.props.alias}
+          notedata={this.state.editableNote}
+        />
       : null
       }
       { this.props.notedata ?
@@ -48,12 +67,18 @@ class Notes extends Component {
                   { value.isvalid ?
                     <p>
                       <strong>{ value.submitter }</strong> says:<i className="ml-2 fa fa-thumbs-o-up"></i>
-                      <Button className="mr-1 float-right" onClick={this.handleEdit}>Edit Note</Button>
+                      { (value.submitter === this.props.alias) ?
+                        <Button className="mr-1 float-right" onClick={this.handleEdit}>Edit Note</Button>
+                      : null
+                      }
                     </p>
                   :
                     <p>
                       <strong>{ value.submitter }</strong> says:<i className="ml-2 fa fa-thumbs-o-down"></i>
-                      <Button className="mr-1 float-right" onClick={this.handleEdit}>Edit Note</Button>
+                      { (value.submitter === this.props.alias) ?
+                        <Button className="mr-1 float-right" onClick={this.handleEdit}>Edit Note</Button>
+                      : null
+                      }
                     </p>
                   }
                   </CardTitle>
@@ -69,6 +94,14 @@ class Notes extends Component {
             </Col>
           </Row>
           ))
+        }
+        { (Object.keys(this.state.editableNote).length === 0) ?
+          <Row>
+            <Col>
+              <Button className="mr-1 float-right" onClick={this.handleEdit}>Add Note</Button>
+            </Col>
+          </Row>
+        : null
         }
         </div>
       :

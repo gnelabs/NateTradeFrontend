@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import {
   Button,
+  Col,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Form,
   FormGroup,
-  FormText,
   Input,
   Label,
   Modal,
@@ -19,27 +23,134 @@ class Editor extends Component {
     super(props);
     
     this.state = {
-      jwttoken: "",
-      loadingSpinner: true
+      jwttoken: this.props.jwt,
+      loadingSpinner: false,
+      buttonDisabled: true,
+      dropdownOpen: false,
+      validToSet: "Select",
+      noteToSet: this.props.notedata.note ? this.props.notedata.note : "",
+      linkToSet: this.props.notedata.link ? this.props.notedata.link : ""
     };
+    
+    this.handleNoteChange = this.handleNoteChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleLinkChange = this.handleLinkChange.bind(this);
   }
   
   componentDidMount() {
-    console.log("loaded notes editor component");
-    console.log(this.props);
+    if (this.props.notedata.isvalid === true) {
+      this.setState({
+        validToSet: "Yes",
+      });
+    } else if (this.props.notedata.isvalid === false) {
+      this.setState({
+        validToSet: "No",
+      });
+    }
   }
   
+  // Dropdown open/close toggler.
+  toggleDropDown() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen,
+    });
+  }
+  
+  // Dropdown selector.
+  handleClick(event) {
+    this.setState({
+      validToSet: event.currentTarget.textContent,
+      buttonDisabled: false
+    });
+  }
+  
+  // Note text box input.
+  handleNoteChange(event) {
+    this.setState({
+      buttonDisabled: false,
+      noteToSet: event.target.value
+    });
+  }
+  
+  // Link text box input.
+  handleLinkChange(event) {
+    this.setState({
+      buttonDisabled: false,
+      linkToSet: event.target.value
+    });
+  }
+  
+  handleSubmit() {
+    console.log({
+      "submitter": this.props.alias,
+      "ticker": this.props.ticker,
+      "isvalid": this.state.validToSet,
+      "link": this.state.linkToSet,
+      "note": this.state.noteToSet
+    });
+  }
+  
+  // The form needs to have preventdefault set for onSubmit to ignore the built-in form enter key trigger.
   render() {
     return (
       <div>
         <Modal isOpen={this.props.showmodal} toggle={this.props.toggle} className={this.props.className}>
           <ModalHeader toggle={this.props.toggle}>Edit notes for {this.props.ticker}</ModalHeader>
           <ModalBody>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <Form onSubmit={e => e.preventDefault()} className="form-horizontal">
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input"><strong>Note</strong></Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input type="textarea" id="Note" name="Note" autoFocus={true} onChange={this.handleNoteChange} value={this.state.noteToSet} style={{ height: 100 }} />
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input"><strong>Link</strong> (optional)</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input type="text" id="Link" name="Link" onChange={this.handleLinkChange} value={this.state.linkToSet} />
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <div>
+                  <Col md="6">
+                    <Label htmlFor="text-input"><strong>Arb Is Valid?</strong></Label>
+                  </Col>
+                </div>
+                <div>
+                  <Col xs="12" md="9">
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
+                      <DropdownToggle caret>
+                        {this.state.validToSet}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={this.handleClick}>Yes</DropdownItem>
+                        <DropdownItem onClick={this.handleClick}>No</DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </Col>
+                </div>
+              </FormGroup>
+            </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary">Do Something</Button>{' '}
-            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          { this.state.loadingSpinner ?
+            <div>
+              <Spinner animation="border" role="status" variant="secondary" />
+              <Button type="submit" color="primary" disabled={true} >Submit</Button>
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            </div>
+          :
+            <div>
+              <Button type="submit" color="primary" disabled={this.state.buttonDisabled} onClick={this.handleSubmit} >Submit</Button>
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            </div>
+          }
           </ModalFooter>
         </Modal>
       </div>

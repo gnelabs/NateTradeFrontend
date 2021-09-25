@@ -91,6 +91,8 @@ class DivvyArb extends Component {
     
     this.state = {
       jwttoken: "",
+      userAlias: "",
+      userTimeZone: "",
       divvyArbData: [],
       loadingSpinner: true,
       notesData: {},
@@ -107,6 +109,8 @@ class DivvyArb extends Component {
       .then(result => {
         this.setState({
           jwttoken: (result.signInUserSession.accessToken.jwtToken),
+          userAlias: result.attributes['custom:alias'],
+          userTimeZone: result.attributes['custom:timezone']
         },
         this.fetchDivvyArbTickers
         );
@@ -245,7 +249,12 @@ class DivvyArb extends Component {
                     </CardHeader>
                     <CardBody>
                       <div>
-                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} ticker={this.state.tickerSymbolToDisplay} jwt={this.state.jwttoken} />
+                        <Notes
+                          notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
+                          ticker={this.state.tickerSymbolToDisplay}
+                          jwt={this.state.jwttoken}
+                          alias={this.state.userAlias}
+                        />
                       </div>
                     </CardBody>
                   </div>
@@ -276,7 +285,12 @@ class DivvyArb extends Component {
                     </CardHeader>
                     <CardBody>
                       <div>
-                        <Notes notedata={this.state.notesData[this.state.tickerSymbolToDisplay]} ticker={this.state.tickerSymbolToDisplay} />
+                        <Notes
+                          notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
+                          ticker={this.state.tickerSymbolToDisplay}
+                          jwt={this.state.jwttoken}
+                          alias={this.state.userAlias}
+                        />
                       </div>
                     </CardBody>
                   </div>
