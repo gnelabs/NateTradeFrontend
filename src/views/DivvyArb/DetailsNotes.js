@@ -30,8 +30,8 @@ class Notes extends Component {
   }
   
   // Make the user's own note editable, prepare to pass that data to the Editor component.
-  componentDidUpdate(previousProps, previousState) {
-    if (previousProps.notedata !== this.props.notedata) {
+  freshEditableNote() {
+    if (this.props.notedata) {
       for (let item of this.props.notedata) {
         if (item.submitter === this.props.alias) {
           this.setState({
@@ -39,6 +39,15 @@ class Notes extends Component {
           });
         }
       }
+    }
+  }
+  
+  // Clear out previously cached note data by resetting the state.
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.notedata !== this.props.notedata) {
+      this.setState({
+        editableNote: {}
+      }, this.freshEditableNote);
     }
   }
   
@@ -95,17 +104,26 @@ class Notes extends Component {
           </Row>
           ))
         }
+        </div>
+      : null
+      }
+      { (this.props.ticker !==  "Click View for details.")  ?
+        <div>
         { (Object.keys(this.state.editableNote).length === 0) ?
           <Row>
             <Col>
-              <Button className="mr-1 float-right" onClick={this.handleEdit}>Add Note</Button>
+              <Button className="ml-2" onClick={this.handleEdit}>Add Note</Button>
             </Col>
           </Row>
         : null
         }
         </div>
       :
-        <small className="text-muted">There are no notes to display for this ticker.</small>
+        <Row>
+          <Col>
+            <small className="text-muted">There are no notes to display for this ticker.</small>
+          </Col>
+        </Row>
       }
       </div>
     );

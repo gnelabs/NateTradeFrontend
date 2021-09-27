@@ -28,6 +28,7 @@ class Editor extends Component {
       buttonDisabled: true,
       dropdownOpen: false,
       validToSet: "Select",
+      doUpdate: this.props.notedata.note ? true : false,
       noteToSet: this.props.notedata.note ? this.props.notedata.note : "",
       linkToSet: this.props.notedata.link ? this.props.notedata.link : ""
     };
@@ -42,11 +43,11 @@ class Editor extends Component {
   componentDidMount() {
     if (this.props.notedata.isvalid === true) {
       this.setState({
-        validToSet: "Yes",
+        validToSet: "Yes"
       });
     } else if (this.props.notedata.isvalid === false) {
       this.setState({
-        validToSet: "No",
+        validToSet: "No"
       });
     }
   }
@@ -83,13 +84,36 @@ class Editor extends Component {
   }
   
   handleSubmit() {
-    console.log({
-      "submitter": this.props.alias,
-      "ticker": this.props.ticker,
-      "isvalid": this.state.validToSet,
-      "link": this.state.linkToSet,
-      "note": this.state.noteToSet
-    });
+    if ((this.state.noteToSet) && (this.state.validToSet !== "Select")) {
+      this.setState({
+        buttonDisabled: true,
+        loadingSpinner: true
+      });
+      
+      fetch('https://www.natetrade.com/fetch/updatedivvynotes', {
+        method: 'POST',
+        ContentType: 'application/json',
+        headers: {
+          'Authorization': this.state.jwttoken
+        },
+        body: JSON.stringify({
+          "submitter": this.props.alias,
+          "ticker": this.props.ticker,
+          "isvalid": (this.state.validToSet === "Yes") ? true : false,
+          "link": this.state.linkToSet,
+          "note": this.state.noteToSet,
+          "meta": this.state.doUpdate ? "update" : "insert"
+        })
+      }).then((response) => response.json()).then(responseJSON => {
+        if ((responseJSON.update_successful === true) || (responseJSON.insert_successful === true)) {
+          window.location.reload();
+        } else {
+          alert(responseJSON.message);
+        }
+      }).catch(err => alert("Something went wrong contacting the server."));
+    } else {
+      alert("Is Valid and Note are required fields to submit.")
+    }
   }
   
   // The form needs to have preventdefault set for onSubmit to ignore the built-in form enter key trigger.
