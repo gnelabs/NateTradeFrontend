@@ -130,7 +130,7 @@ class DivvyArb extends Component {
   }
   
   fetchDivvyArbTickers() {
-    fetch("https://www.natetrade.com/fetch/divvyarbtickers", {
+    fetch("/fetch/divvyarbtickers", {
       method: "GET",
       ContentType: "application/json",
       headers: {
@@ -219,7 +219,7 @@ class DivvyArb extends Component {
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-sort-amount-desc"></i> Current Arbs
+                <i className="fa fa-sort-amount-desc"></i> Current Dividend Arbitrage Opportunities
               </CardHeader>
               <CardBody>
               { this.state.loadingSpinner ?

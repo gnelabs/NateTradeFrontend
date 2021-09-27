@@ -26,6 +26,7 @@ class Editor extends Component {
       jwttoken: this.props.jwt,
       loadingSpinner: false,
       buttonDisabled: true,
+      deleteDisabled: false,
       dropdownOpen: false,
       validToSet: "Select",
       doUpdate: this.props.notedata.note ? true : false,
@@ -38,6 +39,7 @@ class Editor extends Component {
     this.toggleDropDown = this.toggleDropDown.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleLinkChange = this.handleLinkChange.bind(this);
+    this.handleSubmitDelete = this.handleSubmitDelete.bind(this);
   }
   
   componentDidMount() {
@@ -83,6 +85,7 @@ class Editor extends Component {
     });
   }
   
+  // Submits the post request to the backend. Uses the meta field to determine if update or insert.
   handleSubmit() {
     if ((this.state.noteToSet) && (this.state.validToSet !== "Select")) {
       this.setState({
@@ -90,7 +93,7 @@ class Editor extends Component {
         loadingSpinner: true
       });
       
-      fetch('https://www.natetrade.com/fetch/updatedivvynotes', {
+      fetch('/fetch/updatedivvynotes', {
         method: 'POST',
         ContentType: 'application/json',
         headers: {
@@ -114,6 +117,33 @@ class Editor extends Component {
     } else {
       alert("Is Valid and Note are required fields to submit.")
     }
+  }
+  
+  // Delete-only method. Only requires the primary and sort key along with meta.
+  handleSubmitDelete() {
+    this.setState({
+      deleteDisabled: true,
+      loadingSpinner: true
+    });
+    
+    fetch('https://www.natetrade.com/fetch/updatedivvynotes', {
+      method: 'POST',
+      ContentType: 'application/json',
+      headers: {
+        'Authorization': this.state.jwttoken
+      },
+      body: JSON.stringify({
+        "submitter": this.props.alias,
+        "ticker": this.props.ticker,
+        "meta": "delete"
+      })
+    }).then((response) => response.json()).then(responseJSON => {
+      if (responseJSON.delete_successful === true) {
+        window.location.reload();
+      } else {
+        alert(responseJSON.message);
+      }
+    }).catch(err => alert("Something went wrong contacting the server."));
   }
   
   // The form needs to have preventdefault set for onSubmit to ignore the built-in form enter key trigger.
@@ -166,13 +196,17 @@ class Editor extends Component {
           { this.state.loadingSpinner ?
             <div>
               <Spinner animation="border" role="status" variant="secondary" />
-              <Button type="submit" color="primary" disabled={true} >Submit</Button>
-              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+              <Button className="mr-1" type="submit" color="primary" disabled={true} >Submit</Button>
+              <Button className="ml-1" color="secondary" onClick={this.props.toggle}>Cancel</Button>
             </div>
           :
             <div>
-              <Button type="submit" color="primary" disabled={this.state.buttonDisabled} onClick={this.handleSubmit} >Submit</Button>
-              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            { this.state.doUpdate ?
+              <Button className="mr-5" color="danger" disabled={this.state.deleteDisabled} onClick={this.handleSubmitDelete}>Delete Note</Button>
+            : null
+            }
+              <Button className="mr-1" type="submit" color="primary" disabled={this.state.buttonDisabled} onClick={this.handleSubmit} >Submit</Button>
+              <Button className="ml-1" color="secondary" onClick={this.props.toggle}>Cancel</Button>
             </div>
           }
           </ModalFooter>

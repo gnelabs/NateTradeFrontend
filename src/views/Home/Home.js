@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import {
+  Card,
+  CardBody,
+  CardText,
+  CardTitle,
+  Col,
+  ListGroup,
+  ListGroupItem,
+  Row
+} from 'reactstrap';
 import './Home.scss'
 
 class Home extends Component {
@@ -18,12 +28,39 @@ class Home extends Component {
           </div>
           <div className="col-12 natetrade-maincontent">
             <div className="animated fadeIn">
-              <div className="card bg-light mb-3">
-                <h4 className="card-header">What's New</h4>
-                <div className="card-body">
-                This website is under development. Stay tuned, new stuff will be coming online shortly.
-                </div>
-              </div>
+              <Row>
+                <Col>
+                  <Card className="bg-light">
+                    <CardBody>
+                      <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">9/27/21 - Version 1.2.0</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- General bugfix.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Improved the divvy arb layout.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Added the ability to tag arbs with notes and included a voting feature.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Added a basic historical performance chart to give contextual relativeness.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card className="bg-light">
+                    <CardBody>
+                      <CardTitle tag="h5">9/15/21 - Version 1.1.1</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Initial launch. </ListGroupItem>
+                          <ListGroupItem className="border-0">- First strategy! Divvy arbs.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
             </div>
           </div>
         </div>
