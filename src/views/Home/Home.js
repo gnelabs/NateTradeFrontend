@@ -33,6 +33,20 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">9/30/21 - Version 1.2.1</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Moved to CDN to improve performance.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card className="bg-light">
+                    <CardBody>
                       <CardTitle tag="h5">9/27/21 - Version 1.2.0</CardTitle>
                       <CardText>
                         <ListGroup>

@@ -27,7 +27,7 @@ const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 const UserLayout = React.lazy(() => import('./containers/AuthLayout'));
 
 // Setup auth
-// Parse the html provided by lambda for NateTradeEnvInfo server side info.
+// Defined in env variables set on build.
 if (process.env.NODE_ENV !== 'production') {
   Amplify.configure({
     Auth: {
@@ -38,13 +38,12 @@ if (process.env.NODE_ENV !== 'production') {
     }
   });
 } else {
-  const ServerSideDetails = JSON.parse(document.getElementById('NateTradeEnvInfo').dataset.envinfo);
   Amplify.configure({
     Auth: {
-      identityPoolId: ServerSideDetails.cognitoIdentityPoolId,
-      region: ServerSideDetails.awsRegion,
-      userPoolId: ServerSideDetails.cognitoUserPoolId,
-      userPoolWebClientId: ServerSideDetails.cognitoUserPoolWebClientId
+      identityPoolId: process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID_PROD,
+      region: process.env.REACT_APP_AWS_REGION_PROD,
+      userPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID_PROD,
+      userPoolWebClientId: process.env.REACT_APP_COGNITO_USER_POOL_WEB_CLIENT_ID_PROD
     }
   });
 }

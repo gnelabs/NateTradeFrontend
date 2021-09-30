@@ -93,7 +93,7 @@ class Editor extends Component {
         loadingSpinner: true
       });
       
-      fetch('/fetch/updatedivvynotes', {
+      fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/fetch/updatedivvynotes'), {
         method: 'POST',
         ContentType: 'application/json',
         headers: {
@@ -126,7 +126,7 @@ class Editor extends Component {
       loadingSpinner: true
     });
     
-    fetch('https://www.natetrade.com/fetch/updatedivvynotes', {
+    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/fetch/updatedivvynotes'), {
       method: 'POST',
       ContentType: 'application/json',
       headers: {

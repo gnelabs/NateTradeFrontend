@@ -130,7 +130,7 @@ class DivvyArb extends Component {
   }
   
   fetchDivvyArbTickers() {
-    fetch("/fetch/divvyarbtickers", {
+    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat("/fetch/divvyarbtickers"), {
       method: "GET",
       ContentType: "application/json",
       headers: {

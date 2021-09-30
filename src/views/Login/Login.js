@@ -64,7 +64,7 @@ class Login extends Component {
   // instead reload the url to force React to refresh the state from scratch
   // in order to display the correct account information in the menu.
   async handleVerify() {
-    fetch('/auth/verify', {
+    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/auth/verify'), {
       method: 'GET',
       ContentType: 'application/json',
       headers: {
