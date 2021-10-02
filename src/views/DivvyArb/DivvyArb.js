@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Badge, Button, Card, CardBody, CardHeader, Col, Row, Spinner } from 'reactstrap';
+import { Badge, Button, Card, CardBody, CardHeader, Col, Collapse, Row, Spinner } from 'reactstrap';
 import DataTable from 'react-data-table-component';
 import { Auth } from 'aws-amplify';
 import Chart from './DetailsChart';
@@ -88,6 +88,7 @@ class DivvyArb extends Component {
     super(props);
     
     this.arbDetailsRef = React.createRef();
+    this.helpRef = React.createRef();
     
     this.state = {
       jwttoken: "",
@@ -98,9 +99,12 @@ class DivvyArb extends Component {
       notesData: {},
       prevSightingsData: {},
       tickerSymbolToDisplay: "Click View for details.",
-      detailDataToDisplay: ""
+      detailDataToDisplay: "",
+      collapse: false
     };
     this.handleReference = this.handleReference.bind(this);
+    this.handleHelp = this.handleHelp.bind(this);
+    this.collapseLegend = this.collapseLegend.bind(this);
   }
   
   getJwtOrRedirect() {
@@ -127,6 +131,19 @@ class DivvyArb extends Component {
       tickerSymbolToDisplay: tickerSymbol,
       detailDataToDisplay: this.state.prevSightingsData[tickerSymbol]
     }, this.arbDetailsRef.current.scrollIntoView());
+  }
+  
+  handleHelp(e) {
+    e.preventDefault();
+    this.setState({
+      collapse: true
+    }, this.helpRef.current.scrollIntoView());
+  }
+  
+  collapseLegend() {
+    this.setState({
+      collapse: !this.state.collapse
+    });
   }
   
   fetchDivvyArbTickers() {
@@ -220,6 +237,9 @@ class DivvyArb extends Component {
             <Card>
               <CardHeader>
                 <i className="fa fa-sort-amount-desc"></i> Current Dividend Arbitrage Opportunities
+                <div className="card-header-actions">
+                  <a href="#" onClick={this.handleHelp}><small>Help</small></a>
+                </div>
               </CardHeader>
               <CardBody>
               { this.state.loadingSpinner ?
@@ -312,6 +332,147 @@ class DivvyArb extends Component {
               </Col>
             </React.Fragment>
           }
+          </Row>
+        </div>
+        <div ref={this.helpRef}>
+          <Row>
+            <Col>
+              <Card>
+                <CardHeader>
+                  <i className="fa fa-info-circle"></i> Help - Terminology & Legend
+                  <div className="card-header-actions">
+                  { this.state.collapse ?
+                    <Button color="secondary" onClick={this.collapseLegend} id="toggleCollapse1">Collapse</Button>
+                  :
+                    <Button color="secondary" onClick={this.collapseLegend} id="toggleCollapse1">Expand</Button>
+                  }
+                  </div>
+                </CardHeader>
+                <Collapse isOpen={this.state.collapse} >
+                  <CardBody>
+                    <Row>
+                      <Col>
+                        <p>
+                        Dividend arbitrage is where the cash dividend paid out on a stock is greater than the debit 
+                        cost to put on a long conversion trade. The risk profile, payout, margin efficiency, and 
+                        out-of-the-money positioning is similar to an options call credit spread. Unlike a call 
+                        credit spread, there is no directional or volatility risk. The primary risk, since equity 
+                        options are american-style, is early-exercise risk due to ex-div. The secondary risk is 
+                        contract adjustments by the OCC due to special dividends. 
+                        </p>
+                        <p><hr /></p>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Row>
+                          <p><strong>Fresh</strong> -&nbsp;</p>
+                          <p>
+                          If an arb is marked fresh, it is from today.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Valid</strong> -&nbsp;</p>
+                          <p>
+                          An indicator based on feedback from NateTrade users on whether or not the arb is valid.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Ticker</strong> -&nbsp;</p>
+                          <p>
+                          The symbol for the U.S. exchange traded stock.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Last Seen</strong> -&nbsp;</p>
+                          <p>
+                          The timestamp the arb was last seen. Currently displayed in UTC timezone. The scanner runs 
+                          in 30-minute intervals through standard market hours.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>BPPW</strong> -&nbsp;</p>
+                          <p>
+                          Basis points per-week. The primary comparison measurement for divy arbs on NateTrade. BPPW is 
+                          a calculation of estimated weekly performance when putting on the arbitrage trade, taking 
+                          maintenance margin into account as the cost of carry. Higher BPPW means better performance. 
+                          For example, a BPPW of 50 means you will earn an estimated 0.5% of P&L per week given the amount 
+                          of margin collateral you will need to put up. This measurement allows you compare performance 
+                          of multiple tickers. Typically you will see consistent BPPW performance between 0-100 on valid 
+                          arbs.
+                          </p>
+                          <p>
+                          The calculation assumes you will hold the position until the options expiration, and you are filled 
+                          at the NBBO top of book bid and ask. The calculation assumes a 10% maintenance margin requirement for 
+                          long conversion complex order types. The calculation does not take into account early exercise 
+                          risk, which is primarily a factor of time between now and the ex-dividend date, and the distance 
+                          between the strike and the underlying. The calculation does not take into account the cost of 
+                          margin funding.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Div Amount</strong> -&nbsp;</p>
+                          <p>
+                          The dividend amount paid out per share.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Ex-Div Date</strong> -&nbsp;</p>
+                          <p>
+                          The dividend exclusion date. Stocks use T+2 settlement, so you must put on the trade before this date.
+                          </p>
+                        </Row>
+                      </Col>
+                      <Col>
+                        <Row>
+                          <p><strong>Expiration</strong> -&nbsp;</p>
+                          <p>
+                          The options expiration date to put on the conversion trade in order to be hedged the minimal amount 
+                          of time to collect the maximum amount of profit for the arbitrage.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Underlying</strong> -&nbsp;</p>
+                          <p>
+                          The underlying stock price at the time the arb was discovered.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Strike</strong> -&nbsp;</p>
+                          <p>
+                          The out-of-the-money options call strike the arb was calculated at.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Div Yield</strong> -&nbsp;</p>
+                          <p>
+                          The yield percentage for the individual dividend in this cycle. This is different from the overall 
+                          dividend yield calculated annually by brokers.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Profit</strong> -&nbsp;</p>
+                          <p>
+                          The expected profit earned by a single conversion trade from this arbitrage. This is part of the 
+                          BPPW calculations, and uses the same assumptions.
+                          </p>
+                        </Row>
+                        <Row>
+                          <p><strong>Put Volume</strong> -&nbsp;</p>
+                          <p>
+                          The daily options put volume for the aforementioned strike thus far on the day at the time the arb 
+                          was discovered. Since the mispricing of put option extrinsic value is the reason for this arbitrage, 
+                          knowing how liquid the strike is by looking at previous volume will give you a hint as to whether 
+                          or not it is probable your trade will get filled. Strikes with active volume means you can look at 
+                          previous time and sales to get an idea for how agressively midpoint orders are being filled.
+                          </p>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Collapse>
+              </Card>
+            </Col>
           </Row>
         </div>
       </div>

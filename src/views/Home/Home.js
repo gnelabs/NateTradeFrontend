@@ -33,6 +33,12 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">10/1/21 - Version 1.2.2</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Added a help section to divvy arbs.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
                       <CardTitle tag="h5">9/30/21 - Version 1.2.1</CardTitle>
                       <CardText>
                         <ListGroup>
