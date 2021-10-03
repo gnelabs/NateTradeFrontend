@@ -57,22 +57,12 @@ class DefaultLayout extends Component {
   
   // Dynamically generate some menu items depending on whether or not the user is logged in.
   dynamicMenu() {
-    // Sign out link. Revokes the session.
-    const displaySignOut = {
-      name: 'Log Out',
-      url: '/login',
-      icon: 'fa fa-sign-out',
-      attributes: { onClick: this.signOut },
+    // Account title
+    const accountTitle = {
+      title: true,
+      name: 'Account'
     }
-
-    // Account management.
-    const displayAccountManage = {
-      name: 'Account Settings',
-      url: '/account',
-      icon: 'fa fa-user-circle-o',
-      attributes: { exact: true },
-    }
-
+    
     // Sign in link, redirects to login page.
     const displaySignIn = {
       name: 'Log In',
@@ -89,15 +79,40 @@ class DefaultLayout extends Component {
       attributes: { exact: true },
     }
     
+    // Generic divider to clean up the menu
+    const divider = {
+      divider: true,
+      class: 'm-2'
+    }
+    
+    // Signed in user, display account manage and sign out links.
+    const signedInDisplay = {
+      name: 'Account',
+      icon: 'fa fa-user-circle-o',
+      itemAttr: { id: 'account-signed-in' },
+      children: [
+        {
+          name: 'Account Settings',
+          url: '/account',
+          attributes: { exact: true },
+        },
+        {
+          name: 'Log Out',
+          url: '/login',
+          attributes: { onClick: this.signOut },
+        },
+      ],
+    }
+    
     Auth.currentAuthenticatedUser()
       .then(user => {
-        var joined = navigation.items.concat(displayAccountManage, displaySignOut);
+        var joined = navigation.items.concat(divider, signedInDisplay);
         this.setState({
           navMenu: {items: joined}
         });
       })
       .catch(err => {
-        var joined = navigation.items.concat(displaySignIn, displayRegister);
+        var joined = navigation.items.concat(accountTitle, displaySignIn, displayRegister);
         this.setState({
           navMenu: {items: joined}
         });
