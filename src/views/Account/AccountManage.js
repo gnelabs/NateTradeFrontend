@@ -100,10 +100,17 @@ class AccountManage extends Component {
   
   // Text box input.
   handleChange(event) {
-    this.setState({
-      buttonDisabled: false,
-      aliasToSet: event.target.value
-    });
+    if (event.clipboardData) {
+      this.setState({
+        buttonDisabled: false,
+        aliasToSet: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        buttonDisabled: false,
+        aliasToSet: event.target.value
+      });
+    }
   }
   
   handleKeyPress(target) {
@@ -221,7 +228,7 @@ class AccountManage extends Component {
                     }
                     </Col>
                     <Col xs="12" md="9">
-                      <Input type="text" id="Alias" name="Alias" autoFocus={true} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                      <Input type="text" id="Alias" name="Alias" autoFocus={true} onChange={this.handleChange} onPaste={this.handleChange} onKeyPress={this.handleKeyPress} />
                       <FormText color="muted">
                         A user alias is required to post notes and messages. This is the name that will be  
                         next to your message. You can use your name, a psuedonym, or anything within reason.

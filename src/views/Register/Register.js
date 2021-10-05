@@ -88,9 +88,15 @@ class Register extends Component {
   }
   
   handleChange(event) {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
+    if (event.clipboardData) {
+      this.setState({
+        [event.target.id]: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        [event.target.id]: event.target.value
+      });
+    }
     if (this.state.userName && this.state.passWord) {
       this.setState({
         submitDisabled: false
@@ -176,7 +182,7 @@ class Register extends Component {
                           <i className="fa fa-envelope-o"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="email" placeholder="Email" id='userName' autoFocus={true} onChange={this.handleChange} />
+                      <Input type="email" placeholder="Email" id='userName' autoFocus={true} onChange={this.handleChange} onPaste={this.handleChange} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -184,7 +190,7 @@ class Register extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Password" id='passWord' onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                      <Input type="password" placeholder="Password" id='passWord' onChange={this.handleChange} onPaste={this.handleChange} onKeyPress={this.handleKeyPress} />
                     </InputGroup>
                     <Button color="info" block onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Register Account</Button>
                   </Form>

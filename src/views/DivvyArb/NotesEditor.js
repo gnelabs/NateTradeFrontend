@@ -71,18 +71,32 @@ class Editor extends Component {
   
   // Note text box input.
   handleNoteChange(event) {
-    this.setState({
-      buttonDisabled: false,
-      noteToSet: event.target.value
-    });
+    if (event.clipboardData) {
+      this.setState({
+        buttonDisabled: false,
+        noteToSet: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        buttonDisabled: false,
+        noteToSet: event.target.value
+      });
+    }
   }
   
   // Link text box input.
   handleLinkChange(event) {
-    this.setState({
-      buttonDisabled: false,
-      linkToSet: event.target.value
-    });
+    if (event.clipboardData) {
+      this.setState({
+        buttonDisabled: false,
+        linkToSet: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        buttonDisabled: false,
+        linkToSet: event.target.value
+      });
+    }
   }
   
   // Submits the post request to the backend. Uses the meta field to determine if update or insert.
@@ -112,6 +126,10 @@ class Editor extends Component {
           window.location.reload();
         } else {
           alert(responseJSON.message);
+          this.setState({
+            buttonDisabled: false,
+            loadingSpinner: false
+          });
         }
       }).catch(err => alert("Something went wrong contacting the server."));
     } else {
@@ -142,6 +160,10 @@ class Editor extends Component {
         window.location.reload();
       } else {
         alert(responseJSON.message);
+        this.setState({
+          deleteDisabled: false,
+          loadingSpinner: false
+        });
       }
     }).catch(err => alert("Something went wrong contacting the server."));
   }
@@ -159,7 +181,7 @@ class Editor extends Component {
                   <Label htmlFor="text-input"><strong>Note</strong></Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input type="textarea" id="Note" name="Note" autoFocus={true} onChange={this.handleNoteChange} value={this.state.noteToSet} style={{ height: 100 }} />
+                  <Input type="textarea" id="Note" name="Note" autoFocus={true} onChange={this.handleNoteChange} onPaste={this.handleNoteChange} value={this.state.noteToSet} style={{ height: 100 }} />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -167,7 +189,7 @@ class Editor extends Component {
                   <Label htmlFor="text-input"><strong>Link</strong> (optional)</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input type="text" id="Link" name="Link" onChange={this.handleLinkChange} value={this.state.linkToSet} />
+                  <Input type="text" id="Link" name="Link" onChange={this.handleLinkChange} onPaste={this.handleLinkChange} value={this.state.linkToSet} />
                 </Col>
               </FormGroup>
               <FormGroup row>

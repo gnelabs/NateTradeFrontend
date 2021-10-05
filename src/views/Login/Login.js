@@ -82,14 +82,30 @@ class Login extends Component {
         }
       } else {
         alert("Login failed. Check your username or password and try again.");
+        this.setState({
+          loading_cognito: false,
+          submitDisabled: false
+        });
       }
-    }).catch(err => alert("Something went wrong contacting the server."));
+    }).catch(err => {
+      alert("Something went wrong contacting the server.");
+      this.setState({
+        loading_cognito: false,
+        submitDisabled: false
+      });
+    });
   }
   
   handleChange(event) {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
+    if (event.clipboardData) {
+      this.setState({
+        [event.target.id]: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        [event.target.id]: event.target.value
+      });
+    }
     if (this.state.userName && this.state.passWord) {
       this.setState({
         submitDisabled: false
@@ -101,7 +117,7 @@ class Login extends Component {
     return (
       <div className="app flex-row align-items-center">
         <Container>
-          <Form>
+          <Form onSubmit={e => e.preventDefault()}>
             <Row className="justify-content-center">
               <Col md="8">
                 <CardGroup>
@@ -115,7 +131,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" placeholder="Username (email)" id='userName' autoFocus={true} value={this.state.userName} onChange={this.handleChange} />
+                        <Input type="email" placeholder="Username (email)" id='userName' autoFocus={true} value={this.state.userName} onChange={this.handleChange} onPaste={this.handleChange} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -123,7 +139,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" id='passWord' onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+                        <Input type="password" placeholder="Password" id='passWord' onChange={this.handleChange} onPaste={this.handleChange} onKeyPress={this.handleKeyPress} />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
