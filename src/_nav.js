@@ -8,6 +8,12 @@ const navMenu = {
       attributes: { exact: true },
     },
     {
+      name: 'About',
+      url: '/about',
+      icon: 'fa fa-map-signs',
+      attributes: { exact: true },
+    },
+    {
       divider: true,
       class: 'm-2'
     },
@@ -39,12 +45,6 @@ const navMenu = {
         },
         {
           name: 'SPAC Arbs',
-          url: '/unknown',
-          icon: 'icon-ban',
-          attributes: { disabled: true },
-        },
-        {
-          name: 'Special Divvy Arbs',
           url: '/unknown',
           icon: 'icon-ban',
           attributes: { disabled: true },

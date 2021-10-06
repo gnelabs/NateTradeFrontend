@@ -4,6 +4,7 @@ import Register from './Register';
 import DivvyArb from './DivvyArb';
 import AccountManage from './Account';
 import Dev from './InDev';
+import About from './About';
 
 export {
     Home,
@@ -11,6 +12,7 @@ export {
     Register,
     DivvyArb,
     AccountManage,
-    Dev
+    Dev,
+    About
 };
 

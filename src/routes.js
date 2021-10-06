@@ -6,6 +6,7 @@ const Register = React.lazy(() => import('./views/Register'));
 const DivvyArb = React.lazy(() => import('./views/DivvyArb'));
 const AccountManage = React.lazy(() => import('./views/Account'));
 const Dev = React.lazy(() => import('./views/InDev'));
+const About = React.lazy(() => import('./views/About'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -14,7 +15,8 @@ const routes = [
   { path: '/register', exact: true, name: 'Register', component: Register},
   { path: '/divvyarb', exact: true, name: 'DivvyArb', component: DivvyArb},
   { path: '/account', exact: true, name: 'AccountManage', component: AccountManage},
-  { path: '/indev', exact: true, name: 'InDevelopment', component: Dev}
+  { path: '/indev', exact: true, name: 'InDevelopment', component: Dev},
+  { path: '/about', exact: true, name: 'About', component: About}
 ];
 
 export default routes;
