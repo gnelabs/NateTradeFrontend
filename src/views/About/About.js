@@ -149,7 +149,8 @@ class About extends Component {
                     <Col xs="12" md="9">
                       <Input type="text" id="Captcha" name="Captcha" onChange={this.handleCaptcha} onKeyPress={this.handleKeyPress} />
                       <FormText color="muted">
-                        Enter the CAPTCHA letters to confirm you are human. The CAPTCHA will be upper-case letters only.
+                        Enter the CAPTCHA letters to confirm you are human. The CAPTCHA will be upper-case letters only. 
+                        The current CAPTCHA will expire after 30 minutes.
                       </FormText>
                     </Col>
                   </FormGroup>
