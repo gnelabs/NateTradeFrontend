@@ -6,15 +6,20 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  CardText,
+  CardTitle,
   Col,
   Form,
   FormGroup,
   FormText,
   Input,
   Label,
+  Media,
   Row,
   Spinner 
 } from 'reactstrap';
+
+import portrait_med from '../../assets/img/portrait_natetrade_med.jpg'
 
 class About extends Component {
   constructor(props) {
@@ -128,6 +133,63 @@ class About extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <i className="fa fa-address-card-o"></i> About NateTrade
+              </CardHeader>
+              <CardBody>
+                <CardTitle tag="h6">Uncommon market trading tools and data to help you find an edge.</CardTitle>
+                <CardText>
+                  <Row className="pb-3">
+                    <Col>
+                      <p>
+                      There are many strategies for finding edge in the market, and an equal amount of services 
+                      you can subscribe to in order to simplify the data. There are services out there that 
+                      provide sentiment analysis by looking at discussion boards. There are services out there 
+                      that track time and sales data to give you an idea of market flows. I've tried many of 
+                      these services. The edge these services provide works best if you overlay the information 
+                      with an existing emotional bias. What does your gut tell you? 
+                      </p>
+                      <p>
+                      I am proud to say I have no idea what the market is doing tomorrow. My gut is not a reliable 
+                      source of information. Most discretionary fund managers don't even beat the S&P500, why 
+                      would I be any different? Instead, I want to focus on strategies that take advantage of 
+                      simple mispricing in the market. Math has no bias.
+                      </p>
+                      <p>
+                      Surprisingly, I have been unable to find any existing service out there for retail traders 
+                      that provide me with what I was looking for. Is this only the realm of sophisticated quant 
+                      funds, with their alpha cloaked behind a veil of secrecy and NDAs? Is the efficient market 
+                      hypothesis actually true? I started this project to find the answer to that question. 
+                      This is why I built NateTrade. Whether you are a retail trader on your own or in professional finance, 
+                      I hope that you find value here.
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row className="bg-light">
+                    <Col xs="auto" lg="3">
+                      <img src={portrait_med} alt="Me" />
+                    </Col>
+                    <Col xs="auto" lg="9" className="p-1">
+                      <h6>Nathan Ward</h6>
+                      <p>
+                      Nathan Ward is the founder and developer of NateTrade, a financial insights service. Prior to 
+                      NateTrade, Nathan spent 10 years working at Amazon.com, with a focus on cloud software and 
+                      infrastructure automation. Nathan has several years of experience independently trading his 
+                      own account using a variety of strategies.
+                      </p>
+                      <p>
+                      Nathan currently lives with his wife and children in rural Ohio.
+                      </p>
+                    </Col>
+                  </Row>
+                </CardText>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <Card>

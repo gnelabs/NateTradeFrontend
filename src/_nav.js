@@ -8,7 +8,7 @@ const navMenu = {
       attributes: { exact: true },
     },
     {
-      name: 'About',
+      name: 'About | Contact',
       url: '/about',
       icon: 'fa fa-map-signs',
       attributes: { exact: true },
