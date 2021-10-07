@@ -39,6 +39,7 @@ class AccountManage extends Component {
       aliasToSet: "",
       passwordExistingFieldDisabled: true,
       buttonDisabled: true,
+      passwordButtonDisabled: true,
       loadingSpinner: true
     };
     
@@ -48,6 +49,7 @@ class AccountManage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
+    this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
   }
   
   getJwtAndAttributesOrRedirect() {
@@ -70,7 +72,8 @@ class AccountManage extends Component {
   
   // Logs out and sends the user to /login.
   async signOut() {
-    await Auth.signOut();
+    await Auth.signOut()
+      .then(data => window.location.reload());
   }
   
   // Read the list of timezones and filter so it can be displayed in the dropdown.
@@ -136,7 +139,7 @@ class AccountManage extends Component {
     
     if (this.state.PasswordNew && this.state.PasswordOld) {
       this.setState({
-        buttonDisabled: false
+        passwordButtonDisabled: false
       });
     }
   }
@@ -248,6 +251,14 @@ class AccountManage extends Component {
         this.aliasUpdate(user, "");
       }
     }
+  }
+  
+  async handlePasswordSubmit() {
+    const user = await Auth.currentAuthenticatedUser();
+    
+    this.setState({
+      loadingSpinner: true
+    });
     
     if (this.state.PasswordNew && this.state.PasswordOld) {
       this.passwordUpdate(user, this.state.PasswordOld, this.state.PasswordNew);
@@ -266,27 +277,6 @@ class AccountManage extends Component {
               </CardHeader>
               <CardBody>
                 <Form onSubmit={e => e.preventDefault()} className="form-horizontal">
-                  <FormGroup row>
-                    <Col md="6">
-                      <Label htmlFor="text-input"><strong>Change password</strong></Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="password" id="PasswordNew" name="PasswordNew" placeholder="new password" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
-                      <FormText color="muted">
-                        Enter a new password to update.
-                      </FormText>
-                    </Col>
-                    <Col xs="12" md="9">
-                    { this.state.PasswordNew ?
-                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
-                    :
-                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} disabled />
-                    }  
-                      <FormText color="muted">
-                        Enter your existing password to confirm your identity.
-                      </FormText>
-                    </Col>
-                  </FormGroup>
                   <FormGroup row>
                     <Col md="6">
                     { this.state.alias ?
@@ -353,7 +343,7 @@ class AccountManage extends Component {
                 <div>
                   <Row>
                     <Col>
-                      <Button type="submit" color="secondary" disabled={true} >Submit</Button>
+                      <Button type="submit" color="secondary" disabled={true} >Submit Settings</Button>
                     </Col>
                     <Col>
                       <Spinner animation="border" role="status" variant="secondary" />
@@ -364,7 +354,63 @@ class AccountManage extends Component {
                 <div>
                   <Row>
                     <Col>
-                      <Button type="submit" color="secondary" disabled={this.state.buttonDisabled} onClick={this.handleSubmit} >Submit</Button>
+                      <Button type="submit" color="secondary" disabled={this.state.buttonDisabled} onClick={this.handleSubmit} >Submit Settings</Button>
+                    </Col>
+                    <Col>
+                    </Col>
+                  </Row>
+                </div>
+              }
+              </CardFooter>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <i className="fa fa-lock"></i> Manage Security
+              </CardHeader>
+              <CardBody>
+                <Form onSubmit={e => e.preventDefault()} className="form-horizontal">
+                  <FormGroup row>
+                    <Col md="6">
+                      <Label htmlFor="text-input"><strong>Change password</strong></Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input type="password" id="PasswordNew" name="PasswordNew" placeholder="new password" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
+                    </Col>
+                    <Col xs="12" md="9">
+                    { this.state.PasswordNew ?
+                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
+                    :
+                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} disabled />
+                    }  
+                      <FormText color="muted">
+                        Once you enter the new password, enter your existing password to confirm your identity. 
+                        You will be logged out after you submit. Log in with your updated password.
+                      </FormText>
+                    </Col>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+              <CardFooter>
+              { this.state.loadingSpinner ?
+                <div>
+                  <Row>
+                    <Col>
+                      <Button type="submit" color="secondary" disabled={true} >Submit Password</Button>
+                    </Col>
+                    <Col>
+                      <Spinner animation="border" role="status" variant="secondary" />
+                    </Col>
+                  </Row>
+                </div>
+              :
+                <div>
+                  <Row>
+                    <Col>
+                      <Button type="submit" color="secondary" disabled={this.state.passwordButtonDisabled} onClick={this.handlePasswordSubmit} >Submit Password</Button>
                     </Col>
                     <Col>
                     </Col>
