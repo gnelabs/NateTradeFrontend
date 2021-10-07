@@ -149,11 +149,11 @@ class About extends Component {
                       you can subscribe to in order to simplify the data. There are services out there that 
                       provide sentiment analysis by looking at discussion boards. There are services out there 
                       that track time and sales data to give you an idea of market flows. I've tried many of 
-                      these services. The edge these services provide works best if you overlay the information 
-                      with an existing emotional bias. What does your gut tell you? 
+                      these services. These services work best if you overlay the information with an existing 
+                      emotional bias and trading discipline. What does your gut tell you? 
                       </p>
                       <p>
-                      I am proud to say I have no idea what the market is doing tomorrow. My gut is not a reliable 
+                      I am not ashamed to say I have no idea what the market is doing tomorrow. My gut is not a reliable 
                       source of information. Most discretionary fund managers don't even beat the S&P500, why 
                       would I be any different? Instead, I want to focus on strategies that take advantage of 
                       simple mispricing in the market. Math has no bias.
