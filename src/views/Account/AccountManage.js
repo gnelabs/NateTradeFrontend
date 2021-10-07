@@ -37,6 +37,7 @@ class AccountManage extends Component {
       timeZoneMatching: {},
       timeToSet: "Select ",
       aliasToSet: "",
+      passwordExistingFieldDisabled: true,
       buttonDisabled: true,
       loadingSpinner: true
     };
@@ -46,6 +47,7 @@ class AccountManage extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
   }
   
   getJwtAndAttributesOrRedirect() {
@@ -64,6 +66,11 @@ class AccountManage extends Component {
           pathname: '/login'
         });
       });
+  }
+  
+  // Logs out and sends the user to /login.
+  async signOut() {
+    await Auth.signOut();
   }
   
   // Read the list of timezones and filter so it can be displayed in the dropdown.
@@ -109,6 +116,27 @@ class AccountManage extends Component {
       this.setState({
         buttonDisabled: false,
         aliasToSet: event.target.value
+      });
+    }
+  }
+  
+  // Password text box input.
+  handlePassword(event) {
+    if (event.clipboardData) {
+      this.setState({
+        passwordExistingFieldDisabled: false,
+        [event.target.id]: event.clipboardData.getData('Text')
+      });
+    } else {
+      this.setState({
+        passwordExistingFieldDisabled: false,
+        [event.target.id]: event.target.value
+      });
+    }
+    
+    if (this.state.PasswordNew && this.state.PasswordOld) {
+      this.setState({
+        buttonDisabled: false
       });
     }
   }
@@ -186,6 +214,21 @@ class AccountManage extends Component {
     }
   }
   
+  passwordUpdate(user, oldpass, newpass) {
+    Auth.changePassword(user, oldpass, newpass)
+      .then(result => {
+        this.signOut();
+      })
+      .catch(err => { 
+        alert(err.message);
+      })
+      .finally(err => { 
+        this.setState({
+          loadingSpinner: false
+        });
+      });
+  }
+  
   async handleSubmit() {
     const user = await Auth.currentAuthenticatedUser();
     
@@ -205,6 +248,10 @@ class AccountManage extends Component {
         this.aliasUpdate(user, "");
       }
     }
+    
+    if (this.state.PasswordNew && this.state.PasswordOld) {
+      this.passwordUpdate(user, this.state.PasswordOld, this.state.PasswordNew);
+    }
   }
   
   // The form needs to have preventdefault set for onSubmit to ignore the built-in form enter key trigger.
@@ -219,6 +266,27 @@ class AccountManage extends Component {
               </CardHeader>
               <CardBody>
                 <Form onSubmit={e => e.preventDefault()} className="form-horizontal">
+                  <FormGroup row>
+                    <Col md="6">
+                      <Label htmlFor="text-input"><strong>Change password</strong></Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input type="password" id="PasswordNew" name="PasswordNew" placeholder="new password" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
+                      <FormText color="muted">
+                        Enter a new password to update.
+                      </FormText>
+                    </Col>
+                    <Col xs="12" md="9">
+                    { this.state.PasswordNew ?
+                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} />
+                    :
+                      <Input type="password" id="PasswordOld" name="PasswordOld" placeholder="current passsword" onChange={this.handlePassword} onPaste={this.handlePassword} onKeyPress={this.handleKeyPress} disabled />
+                    }  
+                      <FormText color="muted">
+                        Enter your existing password to confirm your identity.
+                      </FormText>
+                    </Col>
+                  </FormGroup>
                   <FormGroup row>
                     <Col md="6">
                     { this.state.alias ?
