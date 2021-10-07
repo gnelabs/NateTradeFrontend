@@ -183,6 +183,9 @@ class About extends Component {
                       <p>
                       Nathan currently lives with his wife and children in rural Ohio.
                       </p>
+                      <p>
+                        <a href="https://twitter.com/thearbguy" target="_blank"><i className="fa fa-twitter fa-lg"></i></a>
+                      </p>
                     </Col>
                   </Row>
                 </CardText>
