@@ -7,10 +7,6 @@ import {
   CardFooter,
   CardHeader,
   Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Form,
   FormGroup,
   FormText,
@@ -20,7 +16,6 @@ import {
   Spinner 
 } from 'reactstrap';
 import { Auth } from 'aws-amplify';
-import timeZones from '../../_tz';
 
 
 class AccountManage extends Component {
@@ -31,20 +26,13 @@ class AccountManage extends Component {
       jwttoken: "",
       email: "",
       alias: "",
-      timezone: "",
-      dropdownOpen: false,
-      timeZoneDropDownList: [],
-      timeZoneMatching: {},
-      timeToSet: "Select ",
       aliasToSet: "",
       passwordExistingFieldDisabled: true,
       buttonDisabled: true,
       passwordButtonDisabled: true,
-      loadingSpinner: true
+      loadingSpinner: false
     };
     
-    this.toggle = this.toggle.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -59,8 +47,7 @@ class AccountManage extends Component {
         this.setState({
           jwttoken: (result.signInUserSession.accessToken.jwtToken),
           email: result.attributes.email,
-          alias: result.attributes['custom:alias'],
-          timezone: result.attributes['custom:timezone']
+          alias: result.attributes['custom:alias']
         });
       })
       .catch(err => { 
@@ -74,38 +61,6 @@ class AccountManage extends Component {
   async signOut() {
     await Auth.signOut()
       .then(data => window.location.reload());
-  }
-  
-  // Read the list of timezones and filter so it can be displayed in the dropdown.
-  curateTimeZones() {
-    let tzlabels = []
-    let tzdict = {}
-    
-    for (let item of timeZones) {
-      tzlabels.push(item.label.concat(" ", item.value));
-      tzdict[item.label.concat(" ", item.value)] = item.value;
-    }
-    
-    this.setState({
-      timeZoneDropDownList: tzlabels,
-      timeZoneMatching: tzdict,
-      loadingSpinner: false
-    });
-  }
-  
-  // Dropdown open/close toggler.
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
-    });
-  }
-  
-  // Dropdown selector.
-  handleClick(event) {
-    this.setState({
-      timeToSet: event.currentTarget.textContent,
-      buttonDisabled: false
-    });
   }
   
   // Text box input.
@@ -152,38 +107,6 @@ class AccountManage extends Component {
   
   componentDidMount() {
     this.getJwtAndAttributesOrRedirect();
-    this.curateTimeZones();
-  }
-  
-  tzUpdate(user, timezone) {
-    // A GMT +00:00 timezone setting means remove the attribute since all data is already UTC.
-    if (timezone === "+00:00") {
-      Auth.deleteUserAttributes(user, ["custom:timezone"])
-        .then(result => {
-          this.getJwtAndAttributesOrRedirect();
-        })
-        .catch(err => { 
-          alert(err.message);
-        })
-        .finally(err => { 
-          this.setState({
-            loadingSpinner: false
-          });
-        });
-    } else {
-      Auth.updateUserAttributes(user, {"custom:timezone": timezone})
-        .then(result => {
-          this.getJwtAndAttributesOrRedirect();
-        })
-        .catch(err => { 
-          alert(err.message);
-        })
-        .finally(err => { 
-          this.setState({
-            loadingSpinner: false
-          });
-        });
-    }
   }
   
   aliasUpdate(user, alias) {
@@ -239,10 +162,6 @@ class AccountManage extends Component {
       loadingSpinner: true
     });
     
-    if (this.state.timeToSet !== "Select ") {
-      this.tzUpdate(user, this.state.timeZoneMatching[this.state.timeToSet]);
-    }
-    
     if (this.state.aliasToSet) {
       this.aliasUpdate(user, this.state.aliasToSet);
     } else {
@@ -291,48 +210,6 @@ class AccountManage extends Component {
                         A user alias is required to post notes and messages. This is the name that will be  
                         next to your message. You can use your name, a psuedonym, or anything within reason.
                         Keep it classy. To delete your alias, submit an empty one.
-                      </FormText>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="6">
-                    { this.state.timezone ?
-                      <Label htmlFor="text-input"><strong>Time Zone</strong> (optional) - Currently set to {this.state.timezone}</Label>
-                    :
-                      <Label htmlFor="text-input"><strong>Time Zone</strong> (optional)</Label>
-                    }
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                        <DropdownToggle caret>
-                          {this.state.timeToSet}
-                        </DropdownToggle>
-                        <DropdownMenu
-                          modifiers={{
-                            setMaxHeight: {
-                              enabled: true,
-                              fn: (data) => {
-                                return {
-                                  ...data,
-                                  styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: '640px',
-                                  },
-                                };
-                              },
-                            },
-                          }}
-                        >
-                        { this.state.timeZoneDropDownList.map((value, index) => (
-                          <DropdownItem onClick={this.handleClick}>{value}</DropdownItem>
-                        ))}
-                        </DropdownMenu>
-                      </Dropdown>
-                      <FormText color="muted">
-                        Choose a time zone if you want timestamps displayed on this website to be adjusted 
-                        to your local time zone. Choose GMT +00:00 to remove or set back to default. All data stored 
-                        on NateTrade is localized to UTC.
                       </FormText>
                     </Col>
                   </FormGroup>
