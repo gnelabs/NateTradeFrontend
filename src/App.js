@@ -62,6 +62,7 @@ class App extends Component {
             <Route path="/account" name="AccountManage" component={DefaultLayout} />
             <Route path="/indev" name="InDevelopment" component={DefaultLayout} />
             <Route path="/about" name="About" component={DefaultLayout} />
+            <Route path="/forgotpassword" name="ForgotPassword" component={UserLayout} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

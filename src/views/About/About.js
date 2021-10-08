@@ -14,7 +14,6 @@ import {
   FormText,
   Input,
   Label,
-  Media,
   Row,
   Spinner 
 } from 'reactstrap';

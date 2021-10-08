@@ -11,16 +11,19 @@ class Login extends Component {
     
     // The state is passed from register to login if this is a new user.
     if (this.props.location.state !== undefined && this.props.location.state != null) {
-      var predefinedUser = this.props.location.state;
+      this.state = {
+        freshlyRegistered: this.props.location.state,
+      };
     } else {
-      var predefinedUser = ""
+      this.state = {
+        freshlyRegistered: "",
+      };
     }
     
     this.state = {
       submitDisabled: true,
       verifyDisabled: true,
-      freshlyRegistered: predefinedUser,
-      userName: predefinedUser,
+      userName: this.state.freshlyRegistered,
       loading_cognito: false,
       jwttoken: ""
     };
@@ -28,6 +31,7 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleVerify = this.handleVerify.bind(this);
+    this.handleForgotpassword = this.handleForgotpassword.bind(this);
   }
   
   handleKeyPress(target) {
@@ -113,6 +117,13 @@ class Login extends Component {
     }
   }
   
+  handleForgotpassword() {
+    this.props.history.push({
+      pathname: '/forgotpassword',
+      state: this.state.userName,
+    });
+  }
+  
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -144,6 +155,9 @@ class Login extends Component {
                       <Row>
                         <Col xs="6">
                           <Button color="info" className="px-4" onClick={this.handleSubmit} disabled={this.state.submitDisabled}>Log In</Button>
+                        </Col>
+                        <Col xs="6">
+                          <Button color="link" className="px-4" onClick={this.handleForgotpassword}>Forgot Password</Button>
                         </Col>
                         { this.state.loading_cognito ?
                         <Spinner animation="border" role="status" variant="secondary" />

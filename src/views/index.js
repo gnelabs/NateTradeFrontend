@@ -5,6 +5,7 @@ import DivvyArb from './DivvyArb';
 import AccountManage from './Account';
 import Dev from './InDev';
 import About from './About';
+import ForgotPassword from './ForgotPassword';
 
 export {
     Home,
@@ -13,6 +14,7 @@ export {
     DivvyArb,
     AccountManage,
     Dev,
-    About
+    About,
+    ForgotPassword
 };
 
