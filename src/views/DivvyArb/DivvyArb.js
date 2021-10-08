@@ -207,7 +207,12 @@ class DivvyArb extends Component {
             arrayItem["fresh"] = ""
           }
           
+          // Add a percent sign since this is a percentage.
           arrayItem["div_yield"] = arrayItem["div_yield"].concat("%")
+          
+          // Convert the UTC 8601 timestamp to a local time using the users browser locale setting.
+          const utcTimestamp = new Date(arrayItem["timestamp"])
+          arrayItem["timestamp"] = utcTimestamp.toLocaleString()
           
           data.push(arrayItem);
         }, this); // Passing this as the second argument to forEach so it has access to scope.
