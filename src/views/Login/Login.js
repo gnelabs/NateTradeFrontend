@@ -124,6 +124,10 @@ class Login extends Component {
     });
   }
   
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Login');
+  }
+  
   render() {
     return (
       <div className="app flex-row align-items-center">

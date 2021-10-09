@@ -140,6 +140,10 @@ class ForgotPassword extends Component {
     }
   }
   
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Forgot Password');
+  }
+  
   render() {
     return (
       <div className="app flex-row align-items-center">

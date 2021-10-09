@@ -18,6 +18,10 @@ class Home extends Component {
     this.state = {};
   }
   
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE;
+  }
+  
   render() {
     return (
       <React.Fragment>

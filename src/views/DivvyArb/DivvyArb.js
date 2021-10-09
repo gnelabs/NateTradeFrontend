@@ -231,7 +231,8 @@ class DivvyArb extends Component {
   }
   
   componentDidMount() {
-    this.getJwtOrRedirect()
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Divvy Arbs');
+    this.getJwtOrRedirect();
   }
   
   render() {

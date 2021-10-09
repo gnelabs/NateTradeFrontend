@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 class Dev extends Component {
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - In Development');
+  }
+  
   render() {
     return (
       <React.Fragment>

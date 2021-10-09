@@ -129,6 +129,10 @@ class About extends Component {
     }).catch(err => alert("Something went wrong contacting the server."));
   }
   
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - About');
+  }
+  
   render() {
     return (
       <div className="animated fadeIn">

@@ -104,6 +104,10 @@ class Register extends Component {
     }
   }
   
+  componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Register');
+  }
+  
   render() {
     return (
       <div className="app flex-row mt-5">

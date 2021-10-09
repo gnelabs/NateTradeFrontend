@@ -106,6 +106,7 @@ class AccountManage extends Component {
   }
   
   componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Account Manage');
     this.getJwtAndAttributesOrRedirect();
   }
   
