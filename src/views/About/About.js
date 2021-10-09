@@ -152,8 +152,8 @@ class About extends Component {
                       emotional bias and trading discipline. What does your gut tell you? 
                       </p>
                       <p>
-                      I am not ashamed to say I have no idea what the market is doing tomorrow. My gut is not a reliable 
-                      source of information. Most discretionary fund managers don't even beat the S&P500, why 
+                      I am not ashamed to say I have no idea what the market is doing tomorrow. My gut is not 
+                      a reliable source of information. Most traders don't even beat the S&P500, why 
                       would I be any different? Instead, I want to focus on strategies that take advantage of 
                       simple mispricing in the market. Math has no bias.
                       </p>

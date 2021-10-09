@@ -33,6 +33,16 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">10/8/21 - Version 1.2.3</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Localized timestamps to the user's timezone.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Added a reset password and forgot password page.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Added an about page with contact form.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Fixed login bug to work with password managers.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Updated menu organization to prepare for future pages.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
                       <CardTitle tag="h5">10/1/21 - Version 1.2.2</CardTitle>
                       <CardText>
                         <ListGroup>
