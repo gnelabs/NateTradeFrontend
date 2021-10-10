@@ -75,6 +75,7 @@ class About extends Component {
   
   // If the page is reloaded, a new identity is generated and thus a new captcha is downloaded.
   componentDidMount() {
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - About');
     this.generateNewCaptchaIdentity();
   }
   
@@ -84,41 +85,26 @@ class About extends Component {
     }
   }
   
-  sendContactEmail() {
-    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/newuser/contact'), {
-      method: 'POST',
-      ContentType: 'application/json',
-      body: JSON.stringify({
-        "email": this.state.Email,
-        "subject": this.state.Subject,
-        "message": this.state.Message
-      })
-    }).then((response) => response.json()).then(responseJSON => {
-      if (responseJSON.contact_successful === true) {
-        alert("Your email has been submitted.");
-        window.location.reload();
-      } else {
-        alert(responseJSON.message);
-      }
-    }).catch(err => alert("Something went wrong contacting the server."));
-  }
-  
   handleSubmit() {
     this.setState({
       loadingSpinner: true,
       buttonDisabled: true
     });
     
-    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/newuser/captcha'), {
+    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat('/newuser/contact'), {
       method: 'POST',
       ContentType: 'application/json',
       body: JSON.stringify({
+        "email": this.state.Email,
+        "subject": this.state.Subject,
+        "message": this.state.Message,
         "identity": this.state.captchaIdentity,
         "captchastring": this.state.captchaString
       })
     }).then((response) => response.json()).then(responseJSON => {
-      if (responseJSON.captcha_successful === true) {
-        this.sendContactEmail();
+      if (responseJSON.contact_successful === true) {
+        alert("Your email has been submitted.");
+        window.location.reload();
       } else {
         alert(responseJSON.message);
         this.setState({
@@ -127,10 +113,6 @@ class About extends Component {
         }, this.generateNewCaptchaIdentity);
       }
     }).catch(err => alert("Something went wrong contacting the server."));
-  }
-  
-  componentDidMount() {
-    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - About');
   }
   
   render() {
