@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import Chart from './DetailsChart';
 import Notes from './DetailsNotes';
 
+// Table column names, predefined here for cleanliness.
 const tableColumns = [
   {
     id: 0,
@@ -30,18 +31,18 @@ const tableColumns = [
   },
   {
     id: 4,
-    name: "BPPW",
-    selector: (row) => row.bppw
+    name: "DTP",
+    selector: (row) => row.days_to_profit
   },
   {
     id: 5,
-    name: "Div Amount",
-    selector: (row) => row.div_amount
+    name: "Rebate Rate",
+    selector: (row) => row.rebate
   },
   {
     id: 6,
-    name: "Ex-Div Date",
-    selector: (row) => row.ex_date
+    name: "Breakeven Rate",
+    selector: (row) => row.breakeven_borrow_rate
   },
   {
     id: 7,
@@ -60,14 +61,9 @@ const tableColumns = [
     selector: (row) => row.strike
   },
   {
-    id: 10,
-    name: "Div Yield",
-    selector: (row) => row.div_yield
-  },
-  {
     id: 11,
     name: "Profit",
-    selector: (row) => row.profit_on_longconv
+    selector: (row) => row.overall_profit
   },
   {
     id: 12,
@@ -83,7 +79,7 @@ const tableColumns = [
 ];
 
 
-class DivvyArb extends Component {
+class BorrowArb extends Component {
   constructor(props) {
     super(props);
     
@@ -94,7 +90,7 @@ class DivvyArb extends Component {
       jwttoken: "",
       userAlias: "",
       userTimeZone: "",
-      divvyArbData: [],
+      borrowArbData: [],
       loadingSpinner: true,
       notesData: {},
       prevSightingsData: {},
@@ -113,10 +109,9 @@ class DivvyArb extends Component {
       .then(result => {
         this.setState({
           jwttoken: (result.signInUserSession.accessToken.jwtToken),
-          userAlias: result.attributes['custom:alias'],
-          userTimeZone: result.attributes['custom:timezone']
+          userAlias: result.attributes['custom:alias']
         },
-        this.fetchDivvyArbTickers
+        this.fetchBorrowArbTickers
         );
       })
       .catch(err => { 
@@ -146,8 +141,8 @@ class DivvyArb extends Component {
     });
   }
   
-  fetchDivvyArbTickers() {
-    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat("/fetch/divvyarbtickers"), {
+  fetchBorrowArbTickers() {
+    fetch(process.env.REACT_APP_FETCH_ENDPOINT.concat("/fetch/borrowarbtickers"), {
       method: "GET",
       ContentType: "application/json",
       headers: {
@@ -207,9 +202,6 @@ class DivvyArb extends Component {
             arrayItem["fresh"] = ""
           }
           
-          // Add a percent sign since this is a percentage.
-          arrayItem["div_yield"] = arrayItem["div_yield"].concat("%")
-          
           // Convert the UTC 8601 timestamp to a local time using the users browser locale setting.
           const utcTimestamp = new Date(arrayItem["timestamp"])
           arrayItem["timestamp"] = utcTimestamp.toLocaleString()
@@ -219,7 +211,7 @@ class DivvyArb extends Component {
       }
       
       this.setState({
-        divvyArbData: data,
+        borrowArbData: data,
         notesData: notes,
         prevSightingsData: prevsight,
         loadingSpinner: false
@@ -231,7 +223,7 @@ class DivvyArb extends Component {
   }
   
   componentDidMount() {
-    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Divvy Arbs');
+    document.title = process.env.REACT_APP_PAGE_TITLE.concat(' - Borrow Arbs');
     this.getJwtOrRedirect();
   }
   
@@ -242,7 +234,7 @@ class DivvyArb extends Component {
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-sort-amount-desc"></i> Current Dividend Arbitrage Opportunities
+                <i className="fa fa-sort-amount-desc"></i> Current Borrow Arbitrage Opportunities - Symmetric
                 <div className="card-header-actions">
                   <a href="#" onClick={this.handleHelp}><small>Help</small></a>
                 </div>
@@ -253,7 +245,7 @@ class DivvyArb extends Component {
               :
                 <DataTable
                   columns={tableColumns}
-                  data={this.state.divvyArbData}
+                  data={this.state.borrowArbData}
                   pagination
                   highlightOnHover={true}
                   striped={true}
@@ -359,12 +351,7 @@ class DivvyArb extends Component {
                     <Row>
                       <Col>
                         <p>
-                        Dividend arbitrage is where the cash dividend paid out on a stock is greater than the debit 
-                        cost to put on a long conversion trade. The risk profile, payout, margin efficiency, and 
-                        out-of-the-money positioning is similar to an options call credit spread. Unlike a call 
-                        credit spread, there is no directional or volatility risk. The primary risk, since equity 
-                        options are american-style, is early-exercise risk due to ex-div. The secondary risk is 
-                        contract adjustments by the OCC due to special dividends. 
+                        Insert explaination here.
                         </p>
                         <p><hr /></p>
                       </Col>
@@ -397,35 +384,21 @@ class DivvyArb extends Component {
                           </p>
                         </Row>
                         <Row>
-                          <p><strong>BPPW</strong> -&nbsp;</p>
+                          <p><strong>DTP</strong> -&nbsp;</p>
                           <p>
-                          Basis points per-week. The primary comparison measurement for divy arbs on NateTrade. BPPW is 
-                          a calculation of estimated weekly performance when putting on the arbitrage trade, taking 
-                          maintenance margin into account as the cost of carry. Higher BPPW means better performance. 
-                          For example, a BPPW of 50 means you will earn an estimated 0.5% of P&L per week given the amount 
-                          of margin collateral you will need to put up. This measurement allows you compare performance 
-                          of multiple tickers. Typically you will see consistent BPPW performance between 0-100 on valid 
-                          arbs.
-                          </p>
-                          <p>
-                          The calculation assumes you will hold the position until the options expiration, and you are filled 
-                          at the NBBO top of book bid and ask. The calculation assumes a 10% maintenance margin requirement for 
-                          long conversion complex order types. The calculation does not take into account early exercise 
-                          risk, which is primarily a factor of time between now and the ex-dividend date, and the distance 
-                          between the strike and the underlying. The calculation does not take into account the cost of 
-                          margin funding.
+                          Insert explaination here.
                           </p>
                         </Row>
                         <Row>
-                          <p><strong>Div Amount</strong> -&nbsp;</p>
+                          <p><strong>Rebate Rate</strong> -&nbsp;</p>
                           <p>
-                          The dividend amount paid out per share.
+                          Insert explaination here.
                           </p>
                         </Row>
                         <Row>
-                          <p><strong>Ex-Div Date</strong> -&nbsp;</p>
+                          <p><strong>Breakeven rate</strong> -&nbsp;</p>
                           <p>
-                          The dividend exclusion date. Stocks use T+2 settlement, so you must put on the trade before this date.
+                          Insert explaination here.
                           </p>
                         </Row>
                       </Col>
@@ -450,27 +423,19 @@ class DivvyArb extends Component {
                           </p>
                         </Row>
                         <Row>
-                          <p><strong>Div Yield</strong> -&nbsp;</p>
-                          <p>
-                          The yield percentage for the individual dividend in this cycle. This is different from the overall 
-                          dividend yield calculated annually by brokers.
-                          </p>
-                        </Row>
-                        <Row>
                           <p><strong>Profit</strong> -&nbsp;</p>
                           <p>
-                          The expected profit earned by a single conversion trade from this arbitrage. This is part of the 
-                          BPPW calculations, and uses the same assumptions.
+                          Insert explaination here.
                           </p>
                         </Row>
                         <Row>
                           <p><strong>Put Volume</strong> -&nbsp;</p>
                           <p>
                           The daily options put volume for the aforementioned strike thus far on the day at the time the arb 
-                          was discovered. Since the mispricing of put option extrinsic value is the reason for this arbitrage, 
-                          knowing how liquid the strike is by looking at previous volume will give you a hint as to whether 
-                          or not it is probable your trade will get filled. Strikes with active volume means you can look at 
-                          previous time and sales to get an idea for how agressively midpoint orders are being filled.
+                          was discovered. Knowing how liquid the strike is by looking at previous volume will give you a 
+                          hint as to whether or not it is probable your trade will get filled. Strikes with active volume 
+                          means you can look at previous time and sales to get an idea for how agressively midpoint orders 
+                          are being filled.
                           </p>
                         </Row>
                       </Col>
@@ -486,4 +451,4 @@ class DivvyArb extends Component {
   }
 }
 
-export default withRouter(DivvyArb);
+export default withRouter(BorrowArb);

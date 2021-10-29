@@ -6,6 +6,7 @@ import AccountManage from './Account';
 import Dev from './InDev';
 import About from './About';
 import ForgotPassword from './ForgotPassword';
+import BorrowArb from './BorrowArb';
 
 export {
     Home,
@@ -15,6 +16,7 @@ export {
     AccountManage,
     Dev,
     About,
-    ForgotPassword
+    ForgotPassword,
+    BorrowArb
 };
 

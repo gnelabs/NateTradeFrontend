@@ -8,6 +8,7 @@ const AccountManage = React.lazy(() => import('./views/Account'));
 const Dev = React.lazy(() => import('./views/InDev'));
 const About = React.lazy(() => import('./views/About'));
 const ForgotPassword = React.lazy(() => import('./views/ForgotPassword'));
+const BorrowArb = React.lazy(() => import('./views/BorrowArb'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -18,7 +19,7 @@ const routes = [
   { path: '/account', exact: true, name: 'AccountManage', component: AccountManage},
   { path: '/indev', exact: true, name: 'InDevelopment', component: Dev},
   { path: '/about', exact: true, name: 'About', component: About},
-  { path: '/forgotpassword', exact: true, name: 'ForgotPassword', component: ForgotPassword}
+  { path: '/borrowarb', exact: true, name: 'BorrowArb', component: BorrowArb}
 ];
 
 export default routes;

@@ -36,7 +36,7 @@ const navMenu = {
         },
         {
           name: 'Borrow Arbs',
-          url: '/indev',
+          url: '/borrowarb',
           badge: {
             variant: 'primary',
             text: 'In Dev',
