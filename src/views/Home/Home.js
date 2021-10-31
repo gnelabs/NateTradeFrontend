@@ -37,6 +37,21 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">10/30/21 - Version 1.3.0</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Deployed borrow arbitrage strategy. Current in beta testing.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Several bugfixes to divvy arb backend for better error handling.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card className="bg-light">
+                    <CardBody>
                       <CardTitle tag="h5">10/8/21 - Version 1.2.3</CardTitle>
                       <CardText>
                         <ListGroup>
