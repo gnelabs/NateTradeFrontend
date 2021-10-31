@@ -233,6 +233,15 @@ class BorrowArb extends Component {
         <Row>
           <Col>
             <Card>
+              <CardBody>
+                <i className="fa fa-exclamation-triangle"></i> This page is in development, some features and functionality have yet to be released.
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Card>
               <CardHeader>
                 <i className="fa fa-sort-amount-desc"></i> Current Borrow Arbitrage Opportunities - Symmetric
                 <div className="card-header-actions">
@@ -351,7 +360,17 @@ class BorrowArb extends Component {
                     <Row>
                       <Col>
                         <p>
-                        Insert explaination here.
+                        Borrow arbitrage is where the rebate rate for owning stock and lending out your shares 
+                        is greater then the cost to put on a long conversion trade. The trade works similar to 
+                        a synthetic bond, where you are paid a carry for lending out your shares. If that carry 
+                        is greater than the skew priced into the options chain, then you can extract free money 
+                        from the market. There is no directional or volatility risk, however borrow rates for 
+                        stocks change daily, and this variability is the primary risk. The secondary risk is 
+                        utilization risk, since there is no guarantee your shares will be loaned out. NateTrade 
+                        uses a proprietary algorithm to estimate the loanable utilization percentage based on 
+                        previous real-world experience trading borrow arbs. The third risk is early-exercise 
+                        risk if your short options were to go in the money. This exercise risk exists due to 
+                        the unusual dynamics between demand for shares short and option market making.
                         </p>
                         <p><hr /></p>
                       </Col>
@@ -386,23 +405,38 @@ class BorrowArb extends Component {
                         <Row>
                           <p><strong>DTP</strong> -&nbsp;</p>
                           <p>
-                          Insert explaination here.
+                          Days to profit is a measurement of how long the borrow rate would need to remain 
+                          at the current percentage in order for you to have made enough money from loaning 
+                          out shares to recoup the debit cost of the long conversion. Rebates are only paid 
+                          on days the market is open, so DTP does not take into consideration weekends or 
+                          holidays. DTP includes settlement period, slippage, and broker split.
+                          </p>
+                          <p>
+                          Days to profit is the primary method for profiling risk on a borrow arbitrage 
+                          trade. A borrow arb of zero days means the trade is an immediate pure arbitrage. 
+                          From a risk profile perspective, lower days to profit is better, because you are 
+                          accepting a variable carry. Assuming a fixed rebate, if you hold the trade beyond 
+                          the days to profit, any money made from rebates afterwords would be pure profit.
                           </p>
                         </Row>
                         <Row>
                           <p><strong>Rebate Rate</strong> -&nbsp;</p>
                           <p>
-                          Insert explaination here.
-                          </p>
-                        </Row>
-                        <Row>
-                          <p><strong>Breakeven rate</strong> -&nbsp;</p>
-                          <p>
-                          Insert explaination here.
+                          The rebate rate is the annualized percentage you will be paid per share to loan out 
+                          your shares, before the loan-adjusted rate and the brokers' split. Typically, the 
+                          rebate rate tracks closely with the borrow rate, which is the annualized percentage 
+                          paid to short hard-to-borrow shares.
                           </p>
                         </Row>
                       </Col>
                       <Col>
+                        <Row>
+                          <p><strong>Breakeven rate</strong> -&nbsp;</p>
+                          <p>
+                          The breakeven rate is the minimum fixed rebate rate the stock would have to sustain 
+                          in order to break even at options expiration given the long conversion debit.
+                          </p>
+                        </Row>
                         <Row>
                           <p><strong>Expiration</strong> -&nbsp;</p>
                           <p>
@@ -425,7 +459,10 @@ class BorrowArb extends Component {
                         <Row>
                           <p><strong>Profit</strong> -&nbsp;</p>
                           <p>
-                          Insert explaination here.
+                          Profit is the estimated amount you will make at options expiration, 
+                          assuming the borrow rate remains fixed at the current rate. Note, 
+                          borrow rates are variable and change daily, so this is an extremely 
+                          rough estimate.
                           </p>
                         </Row>
                         <Row>
