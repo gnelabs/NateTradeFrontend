@@ -3,22 +3,29 @@ import { Line } from 'react-chartjs-2';
 
 // Chart options.
 const options = {
-  scales: {
-    yAxes: [
-      {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        id: 'y-axis-1'
-      },
-      {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        id: 'y-axis-2'
-      },
-    ],
+  responsive: true,
+  interaction: {
+    mode: 'index',
+    intersect: false,
   },
+  stacked: false,
+  scales: {
+    y: {
+      type: 'linear',
+      display: true,
+      position: 'left',
+    },
+    y1: {
+      type: 'linear',
+      display: true,
+      position: 'right',
+
+      // grid line settings
+      grid: {
+        drawOnChartArea: false, // only want the grid lines for one axis to show up
+      },
+    },
+  }
 };
 
 
@@ -51,7 +58,7 @@ class Chart extends Component {
           fill: false,
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgba(255, 99, 132, 0.2)',
-          yAxisID: 'y-axis-1',
+          yAxisID: 'y',
         },
         {
           label: 'Underlying Price',
@@ -59,7 +66,7 @@ class Chart extends Component {
           fill: false,
           backgroundColor: 'rgb(54, 162, 235)',
           borderColor: 'rgba(54, 162, 235, 0.2)',
-          yAxisID: 'y-axis-2',
+          yAxisID: 'y1',
         },
       ],
     }

@@ -3,17 +3,20 @@ import { Line } from 'react-chartjs-2';
 
 // Chart options.
 const options = {
-  scales: {
-    yAxes: [
-      {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        id: 'y-axis-1'
-      }
-    ],
+  responsive: true,
+  interaction: {
+    mode: 'index',
+    intersect: false,
   },
-};
+  stacked: false,
+  scales: {
+    y: {
+      type: 'linear',
+      display: true,
+      position: 'left',
+    },
+  }
+}
 
 
 class Chart extends Component {
@@ -43,7 +46,7 @@ class Chart extends Component {
           fill: false,
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgba(255, 99, 132, 0.2)',
-          yAxisID: 'y-axis-1',
+          yAxisID: 'y',
         }
       ],
     }
