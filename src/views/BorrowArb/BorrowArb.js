@@ -5,6 +5,7 @@ import DataTable from 'react-data-table-component';
 import { Auth } from 'aws-amplify';
 import Chart from './DetailsChart';
 import Notes from './DetailsNotes';
+import SLBChart from './SLBChart';
 
 // Table column names, predefined here for cleanliness.
 const tableColumns = [
@@ -96,6 +97,7 @@ class BorrowArb extends Component {
       prevSightingsData: {},
       tickerSymbolToDisplay: "Click View for details.",
       detailDataToDisplay: "",
+      slbDataToDisplay: false,
       collapse: false
     };
     this.handleReference = this.handleReference.bind(this);
@@ -124,6 +126,7 @@ class BorrowArb extends Component {
   handleReference(tickerSymbol) {
     this.setState({
       tickerSymbolToDisplay: tickerSymbol,
+      slbDataToDisplay: true,
       detailDataToDisplay: this.state.prevSightingsData[tickerSymbol]
     }, this.arbDetailsRef.current.scrollIntoView());
   }
@@ -265,81 +268,112 @@ class BorrowArb extends Component {
           </Col>
         </Row>
         <div ref={this.arbDetailsRef}>
-          <Row>
           { this.state.detailDataToDisplay ?
-            <React.Fragment>
-              <Col>
-                <Card>
-                  <div>
-                    <CardHeader>
-                      <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
-                    </CardHeader>
-                    <CardBody>
-                      <div>
-                        <Notes
-                          notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
-                          ticker={this.state.tickerSymbolToDisplay}
-                          jwt={this.state.jwttoken}
-                          alias={this.state.userAlias}
-                        />
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              </Col>
-              <Col>
-                <Card>
-                  <div>
-                    <CardHeader>
-                      <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
-                    </CardHeader>
-                    <CardBody>
-                      <div>
-                        <Chart prevsighting={this.state.detailDataToDisplay} />
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              </Col>
-            </React.Fragment>
-          :
-            <React.Fragment>
-              <Col>
-                <Card>
-                  <div>
-                    <CardHeader>
-                      <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
-                    </CardHeader>
-                    <CardBody>
-                      <div>
-                        <Notes
-                          notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
-                          ticker={this.state.tickerSymbolToDisplay}
-                          jwt={this.state.jwttoken}
-                          alias={this.state.userAlias}
-                        />
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              </Col>
-              <Col>
-                <Card>
-                  <div>
-                    <CardHeader>
-                      <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
-                    </CardHeader>
-                    <CardBody>
-                      <div>
-                        <small className="text-muted">There is no history to display for this ticker.</small>
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              </Col>
-            </React.Fragment>
-          }
+          <Row>
+            <Col>
+              <Card>
+                <div>
+                  <CardHeader>
+                    <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <div>
+                      <Notes
+                        notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
+                        ticker={this.state.tickerSymbolToDisplay}
+                        jwt={this.state.jwttoken}
+                        alias={this.state.userAlias}
+                      />
+                    </div>
+                  </CardBody>
+                </div>
+              </Card>
+            </Col>
+            <Col>
+              <Card>
+                <div>
+                  <CardHeader>
+                    <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <div>
+                      <Chart prevsighting={this.state.detailDataToDisplay} />
+                    </div>
+                  </CardBody>
+                </div>
+              </Card>
+            </Col>
           </Row>
+          :
+          <Row>
+            <Col>
+              <Card>
+                <div>
+                  <CardHeader>
+                    <i className="fa fa-object-group"></i> Notes | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <div>
+                      <Notes
+                        notedata={this.state.notesData[this.state.tickerSymbolToDisplay]}
+                        ticker={this.state.tickerSymbolToDisplay}
+                        jwt={this.state.jwttoken}
+                        alias={this.state.userAlias}
+                      />
+                    </div>
+                  </CardBody>
+                </div>
+              </Card>
+            </Col>
+            <Col>
+              <Card>
+                <div>
+                  <CardHeader>
+                    <i className="fa fa-object-group"></i> History | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <div>
+                      <small className="text-muted">There is no history to display for this ticker.</small>
+                    </div>
+                  </CardBody>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          }
+        </div>
+        <div>
+          { this.state.slbDataToDisplay ?
+          <Row>
+            <Col>
+              <Card>
+                <CardHeader>
+                  <i className="fa fa-area-chart"></i> Historical SLB Rates | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                </CardHeader>
+                <CardBody>
+                  <div>
+                    <SLBChart ticker={this.state.tickerSymbolToDisplay} jwttoken={this.state.jwttoken} />
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          :
+          <Row>
+            <Col>
+              <Card>
+                <CardHeader>
+                  <i className="fa fa-area-chart"></i> Historical SLB Rates | <strong>{this.state.tickerSymbolToDisplay}</strong>
+                </CardHeader>
+                <CardBody>
+                  <div>
+                    <small className="text-muted">There is no SLB data to display this ticker.</small>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          }
         </div>
         <div ref={this.helpRef}>
           <Row>
