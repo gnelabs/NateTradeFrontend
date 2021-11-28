@@ -236,15 +236,6 @@ class BorrowArb extends Component {
         <Row>
           <Col>
             <Card>
-              <CardBody>
-                <i className="fa fa-exclamation-triangle"></i> This page is in development, some features and functionality have yet to be released.
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Card>
               <CardHeader>
                 <i className="fa fa-sort-amount-desc"></i> Current Borrow Arbitrage Opportunities - Symmetric
                 <div className="card-header-actions">
@@ -433,7 +424,7 @@ class BorrowArb extends Component {
                           <p><strong>Last Seen</strong> -&nbsp;</p>
                           <p>
                           The timestamp the arb was last seen. Currently displayed in your local timezone. The scanner runs 
-                          in 30-minute intervals through standard market hours.
+                          in five minute intervals through standard market hours.
                           </p>
                         </Row>
                         <Row>

@@ -10,12 +10,31 @@ const navMenu = {
     {
       name: 'About | Contact',
       url: '/about',
-      icon: 'fa fa-map-signs',
+      icon: 'fa fa-address-book-o',
       attributes: { exact: true },
     },
     {
       divider: true,
       class: 'm-2'
+    },
+    {
+      name: 'HFT Strategies',
+      icon: 'fa fa-wpexplorer',
+      itemAttr: {
+        id: 'drop-1',
+        title: true
+      },
+      children: [
+        {
+          name: 'DOPE Sight',
+          url: '/indev',
+          badge: {
+            variant: 'primary',
+            text: 'In Dev',
+          },
+          attributes: { exact: true },
+        },
+      ],
     },
     {
       name: 'Arbitrage Strategies',
@@ -28,18 +47,14 @@ const navMenu = {
         {
           name: 'Divvy Arbs',
           url: '/divvyarb',
-          badge: {
-            variant: 'success',
-            text: 'New!',
-          },
           attributes: { exact: true },
         },
         {
           name: 'Borrow Arbs',
           url: '/borrowarb',
           badge: {
-            variant: 'primary',
-            text: 'In Dev',
+            variant: 'success',
+            text: 'New!',
           },
           attributes: { exact: true },
         },
@@ -94,6 +109,12 @@ const navMenu = {
       itemAttr: { id: 'drop-1' },
       children: [
         {
+          name: 'Stock Loan Rates',
+          url: '/unknown',
+          icon: 'icon-ban',
+          attributes: { disabled: true },
+        },
+        {
           name: 'Hedging Table',
           url: '/unknown',
           icon: 'icon-ban',
@@ -101,6 +122,12 @@ const navMenu = {
         },
         {
           name: 'Developer API',
+          url: '/unknown',
+          icon: 'icon-ban',
+          attributes: { disabled: true },
+        },
+        {
+          name: 'Data Warehouse',
           url: '/unknown',
           icon: 'icon-ban',
           attributes: { disabled: true },

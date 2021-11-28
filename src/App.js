@@ -64,6 +64,7 @@ class App extends Component {
             <Route path="/about" name="About" component={DefaultLayout} />
             <Route path="/forgotpassword" name="ForgotPassword" component={UserLayout} />
             <Route path="/borrowarb" name="BorrowArb" component={DefaultLayout} />
+            <Route path="/dopesight" name="DopeSight" component={DefaultLayout} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

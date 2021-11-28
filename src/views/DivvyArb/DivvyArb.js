@@ -393,7 +393,7 @@ class DivvyArb extends Component {
                           <p><strong>Last Seen</strong> -&nbsp;</p>
                           <p>
                           The timestamp the arb was last seen. Currently displayed in your local timezone. The scanner runs 
-                          in 30-minute intervals through standard market hours.
+                          in five minute intervals through standard market hours.
                           </p>
                         </Row>
                         <Row>

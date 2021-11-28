@@ -37,6 +37,23 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
+                      <CardTitle tag="h5">11/27/21 - Version 1.3.1</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Deployed SLB history chart for borrow arb securities that indicate lending trend.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Improved divvy arb and borrow arb scanner resolution to 5 minutes.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Built exciting new architecture that will allow for high-frequency trading strategies.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              
+              <Row>
+                <Col>
+                  <Card className="bg-light">
+                    <CardBody>
                       <CardTitle tag="h5">10/30/21 - Version 1.3.0</CardTitle>
                       <CardText>
                         <ListGroup>
@@ -45,12 +62,6 @@ class Home extends Component {
                         </ListGroup>
                       </CardText>
                     </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">10/8/21 - Version 1.2.3</CardTitle>
                       <CardText>
@@ -75,12 +86,6 @@ class Home extends Component {
                         </ListGroup>
                       </CardText>
                     </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">9/27/21 - Version 1.2.0</CardTitle>
                       <CardText>
@@ -92,12 +97,6 @@ class Home extends Component {
                         </ListGroup>
                       </CardText>
                     </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">9/15/21 - Version 1.1.1</CardTitle>
                       <CardText>
