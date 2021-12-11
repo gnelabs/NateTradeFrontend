@@ -97,6 +97,7 @@ class Notes extends Component {
                     <p><a href={ value.link } target="_blank">{ value.link }</a></p>
                   : null
                   }
+                  <p><small>{ value.timestamp }</small></p>
                   </CardText>
                 </CardBody>
               </Card>

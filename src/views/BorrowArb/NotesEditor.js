@@ -31,7 +31,8 @@ class Editor extends Component {
       validToSet: "Select",
       doUpdate: this.props.notedata.note ? true : false,
       noteToSet: this.props.notedata.note ? this.props.notedata.note : "",
-      linkToSet: this.props.notedata.link ? this.props.notedata.link : ""
+      linkToSet: this.props.notedata.link ? this.props.notedata.link : "",
+      currentTimestamp: new Date().toISOString()
     };
     
     this.handleNoteChange = this.handleNoteChange.bind(this);
@@ -119,6 +120,7 @@ class Editor extends Component {
           "isvalid": (this.state.validToSet === "Yes") ? true : false,
           "link": this.state.linkToSet,
           "note": this.state.noteToSet,
+          "timestamp": this.state.currentTimestamp,
           "meta": this.state.doUpdate ? "update" : "insert"
         })
       }).then((response) => response.json()).then(responseJSON => {
