@@ -56,15 +56,17 @@ class App extends Component {
         <React.Suspense fallback={loading()}>
           <Switch>
             <Route exact path="/" name="Home" component={DefaultLayout} />
-            <Route path="/divvyarb" name="DivvyArb" component={DefaultLayout} />
+            <Route path="/arbitrage/divvyarb" name="DivvyArb" component={DefaultLayout} />
+            <Route path="/arbitrage" name="HomeRedirect" component={DefaultLayout} />
             <Route path="/login" name="Login Page" component={UserLayout} />} />
             <Route path="/register" name="Register" component={UserLayout} />} />
             <Route path="/account" name="AccountManage" component={DefaultLayout} />
             <Route path="/indev" name="InDevelopment" component={DefaultLayout} />
             <Route path="/about" name="About" component={DefaultLayout} />
             <Route path="/forgotpassword" name="ForgotPassword" component={UserLayout} />
-            <Route path="/borrowarb" name="BorrowArb" component={DefaultLayout} />
+            <Route path="/arbitrage/borrowarb" name="BorrowArb" component={DefaultLayout} />
             <Route path="/dopesight" name="DopeSight" component={DefaultLayout} />
+            <Route path="/dopesight/status" name="DopeSight Status" component={DefaultLayout} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

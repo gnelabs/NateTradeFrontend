@@ -18,7 +18,7 @@ const navMenu = {
       class: 'm-2'
     },
     {
-      name: 'HFT Strategies',
+      name: 'DOPE Sight',
       icon: 'fa fa-wpexplorer',
       itemAttr: {
         id: 'drop-1',
@@ -27,10 +27,19 @@ const navMenu = {
       children: [
         {
           name: 'DOPE Sight',
-          url: '/indev',
+          url: '/dopesight',
           badge: {
             variant: 'primary',
             text: 'In Dev',
+          },
+          attributes: { exact: true },
+        },
+        {
+          name: 'System Status',
+          url: '/dopesight/status',
+          badge: {
+            variant: 'success',
+            text: 'New!',
           },
           attributes: { exact: true },
         },
@@ -46,23 +55,13 @@ const navMenu = {
       children: [
         {
           name: 'Divvy Arbs',
-          url: '/divvyarb',
+          url: '/arbitrage/divvyarb',
           attributes: { exact: true },
         },
         {
           name: 'Borrow Arbs',
-          url: '/borrowarb',
-          badge: {
-            variant: 'success',
-            text: 'New!',
-          },
+          url: '/arbitrage/borrowarb',
           attributes: { exact: true },
-        },
-        {
-          name: 'SPAC Arbs',
-          url: '/unknown',
-          icon: 'icon-ban',
-          attributes: { disabled: true },
         },
         {
           name: 'ETN Tracking Arbs',
@@ -122,12 +121,6 @@ const navMenu = {
         },
         {
           name: 'Developer API',
-          url: '/unknown',
-          icon: 'icon-ban',
-          attributes: { disabled: true },
-        },
-        {
-          name: 'Data Warehouse',
           url: '/unknown',
           icon: 'icon-ban',
           attributes: { disabled: true },
