@@ -7,6 +7,7 @@ import Dev from './InDev';
 import About from './About';
 import ForgotPassword from './ForgotPassword';
 import BorrowArb from './BorrowArb';
+import VolBack from './VolBack';
 
 export {
     Home,
@@ -17,6 +18,7 @@ export {
     Dev,
     About,
     ForgotPassword,
-    BorrowArb
+    BorrowArb,
+    VolBack
 };
 

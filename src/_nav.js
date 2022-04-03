@@ -21,7 +21,7 @@ const navMenu = {
       name: 'DOPE Sight',
       icon: 'fa fa-wpexplorer',
       itemAttr: {
-        id: 'drop-1',
+        id: 'dope-drop',
         title: true
       },
       children: [
@@ -37,10 +37,6 @@ const navMenu = {
         {
           name: 'System Status',
           url: '/dopesight/status',
-          badge: {
-            variant: 'success',
-            text: 'New!',
-          },
           attributes: { exact: true },
         },
       ],
@@ -49,7 +45,7 @@ const navMenu = {
       name: 'Arbitrage Strategies',
       icon: 'fa fa-money',
       itemAttr: {
-        id: 'drop-1',
+        id: 'arb-drop',
         title: true
       },
       children: [
@@ -84,6 +80,22 @@ const navMenu = {
       ],
     },
     {
+      name: 'Volatility Strategies',
+      icon: 'fa fa-industry',
+      itemAttr: { id: 'vol-drop' },
+      children: [
+        {
+          name: 'Vol Backwardation',
+          url: '/volatility/volback',
+          badge: {
+            variant: 'success',
+            text: 'New!',
+          },
+          attributes: { exact: true },
+        }
+      ],
+    },
+    {
       name: 'Pairs Strategies',
       icon: 'fa fa-exchange',
       itemAttr: { id: 'pairs-drop' },
@@ -105,7 +117,7 @@ const navMenu = {
     {
       name: 'Trading Tools',
       icon: 'fa fa-wrench',
-      itemAttr: { id: 'drop-1' },
+      itemAttr: { id: 'trade-drop' },
       children: [
         {
           name: 'Stock Loan Rates',

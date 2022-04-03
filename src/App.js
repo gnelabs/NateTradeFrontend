@@ -67,6 +67,8 @@ class App extends Component {
             <Route path="/arbitrage/borrowarb" name="BorrowArb" component={DefaultLayout} />
             <Route path="/dopesight" name="DopeSight" component={DefaultLayout} />
             <Route path="/dopesight/status" name="DopeSight Status" component={DefaultLayout} />
+            <Route path="/volatility" name="HomeRedirect" component={DefaultLayout} />
+            <Route path="/volatility/backwardation" name="Volatility Backwardation" component={DefaultLayout} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

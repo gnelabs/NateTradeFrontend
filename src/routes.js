@@ -11,6 +11,7 @@ const ForgotPassword = React.lazy(() => import('./views/ForgotPassword'));
 const BorrowArb = React.lazy(() => import('./views/BorrowArb'));
 const DopeSight = React.lazy(() => import('./views/DopeSight/DopeSightMain'));
 const SystemStatus = React.lazy(() => import('./views/DopeSight/SystemStatus'));
+const VolBack = React.lazy(() => import('./views/VolBack'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -18,13 +19,15 @@ const routes = [
   { path: '/login', exact: true, name: 'Login', component: Login},
   { path: '/register', exact: true, name: 'Register', component: Register},
   { path: '/arbitrage/divvyarb', exact: true, name: 'DivvyArb', component: DivvyArb},
-  { path: '/arbitrage', exact: true, name: 'HomeRedirect', component: Home},
+  { path: '/arbitrage', exact: true, name: 'Arbitrage', component: Home},
   { path: '/account', exact: true, name: 'AccountManage', component: AccountManage},
   { path: '/indev', exact: true, name: 'InDevelopment', component: Dev},
   { path: '/about', exact: true, name: 'About', component: About},
   { path: '/arbitrage/borrowarb', exact: true, name: 'BorrowArb', component: BorrowArb},
   { path: '/dopesight', exact: true, name: 'DopeSight', component: DopeSight},
-  { path: '/dopesight/status', exact: true, name: 'DopeSight Status', component: SystemStatus}
+  { path: '/dopesight/status', exact: true, name: 'DopeSight Status', component: SystemStatus},
+  { path: '/volatility', exact: true, name: 'Volatility', component: Home},
+  { path: '/volatility/volback', exact: true, name: 'VolBack', component: VolBack}
 ];
 
 export default routes;
