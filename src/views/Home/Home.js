@@ -37,12 +37,10 @@ class Home extends Component {
                   <Card className="bg-light">
                     <CardBody>
                       <CardTitle tag="h5">What's new?</CardTitle>
-                      <CardTitle tag="h5">11/27/21 - Version 1.3.1</CardTitle>
+                      <CardTitle tag="h5">4/5/22 - Version 1.3.2</CardTitle>
                       <CardText>
                         <ListGroup>
-                          <ListGroupItem className="border-0">- Deployed SLB history chart for borrow arb securities that indicate lending trend.</ListGroupItem>
-                          <ListGroupItem className="border-0">- Improved divvy arb and borrow arb scanner resolution to 5 minutes.</ListGroupItem>
-                          <ListGroupItem className="border-0">- Built exciting new architecture that will allow for high-frequency trading strategies.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Deployed new volatility strategy: Options term structure backwardation screener.</ListGroupItem>
                         </ListGroup>
                       </CardText>
                     </CardBody>
@@ -53,6 +51,16 @@ class Home extends Component {
               <Row>
                 <Col>
                   <Card className="bg-light">
+                    <CardBody>
+                      <CardTitle tag="h5">11/27/21 - Version 1.3.1</CardTitle>
+                      <CardText>
+                        <ListGroup>
+                          <ListGroupItem className="border-0">- Deployed SLB history chart for borrow arb securities that indicate lending trend.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Improved divvy arb and borrow arb scanner resolution to 5 minutes.</ListGroupItem>
+                          <ListGroupItem className="border-0">- Built exciting new architecture that will allow for high-frequency trading strategies.</ListGroupItem>
+                        </ListGroup>
+                      </CardText>
+                    </CardBody>
                     <CardBody>
                       <CardTitle tag="h5">10/30/21 - Version 1.3.0</CardTitle>
                       <CardText>
