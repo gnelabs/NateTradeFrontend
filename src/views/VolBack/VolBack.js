@@ -24,6 +24,11 @@ const volBackwardationTableColumns = [
   },
   {
     id: 3,
+    name: "Underlying Price",
+    selector: (row) => row.underlying
+  },
+  {
+    id: 4,
     name: "Backwardation",
     selector: (row) => row.backwardation
   }
